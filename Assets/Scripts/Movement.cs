@@ -34,7 +34,7 @@ public class Movement : MonoBehaviour
     [SerializeField]
     float _maxFallSpeed = 36f;
 
-    //jump time variables; controls how long to jump:
+    //jump time variables:
     [SerializeField]
     float _jumpTimeMax = 0.15f;
     float _jumpTimeCounter = 0f;
@@ -86,7 +86,7 @@ public class Movement : MonoBehaviour
     void Update()
     {
         //track coyote time:
-        if(isGrounded)
+        if (isGrounded)
         {
             _coyoteTimer = _coyoteTime;
         }
@@ -96,9 +96,7 @@ public class Movement : MonoBehaviour
         }
 
         //jump buffer:
-        //TODO: something to notice here is that airTime is always set to max when space is pressed
-        //it reduces when you reach maxheight but when you add double jump...what would happen?
-        if(Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
             _jumpBufferTimer = _jumpBufferTime;
             _airTimer = _airTime;
@@ -115,7 +113,7 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //before checking the overlap; check if out of coyote time
+        //before checking the overlap; check if out o coyote time
         isGrounded = Physics2D.OverlapCircle(_groundChecker.transform.position, _groundCheckerRadius, _groundLayer);
         PlayerJumpPhysics();
     }
@@ -136,19 +134,17 @@ public class Movement : MonoBehaviour
     void PlayerJumpMovement()
     {
         // Start jump
-        //this here causes problems when using bufferTime; in that case use simple getKey
         if (_jumpBufferTimer > 0f && _coyoteTimer > 0f)
         {
             _isJumping = true;
             _jumpTimeCounter = _jumpTimeMax;
-            _jumpBufferTimer = 0f;
         }
 
         // Continue jump while holding
         if (_jumpBufferTimer > 0f && _isJumping)
         {
-            _jumpBufferTimer = 0f;
             _coyoteTimer = 0f;
+            _jumpBufferTimer = 0f;
             if (_jumpTimeCounter > 0)
             {
                 _jumpTimeCounter -= Time.deltaTime;
@@ -160,11 +156,10 @@ public class Movement : MonoBehaviour
         }
 
         // End jump early (short hop)
-        if (_isJumping && Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(KeyCode.Space))
         {
-            _coyoteTimer = 0f;
             _isJumping = false;
-            if(_airTimer > 0f) _airTimer -= Time.deltaTime;
+            if (_airTimer > 0f) _airTimer -= Time.deltaTime;
         }
     }
 
@@ -172,26 +167,26 @@ public class Movement : MonoBehaviour
     void PlayerJumpPhysics()
     {
         //body velocity:
-        if(_isJumping && _jumpTimeCounter > 0f && _playerRigidbody.velocity.y <= _jumpVelocity)
+        if (_isJumping && _jumpTimeCounter > 0 && _playerRigidbody.velocity.y <= _jumpVelocity)
         {
             _playerRigidbody.velocity = new Vector2(_playerRigidbody.velocity.x, _jumpVelocity);
         }
         //make fall snappy by adding fall multiplier; consider removing in the future:
-        if(_isJumping && Input.GetKeyUp(KeyCode.Space))
+        if (_isJumping && Input.GetKeyUp(KeyCode.Space))
         {
             _playerRigidbody.velocity = new Vector2(_playerRigidbody.velocity.x, _jumpVelocity * _lowJumpMultiplier);
         }
 
         //airTime; stops mid-air so only when jumping and velocity is 0 as you start downward descent the condition should fail
         //reduce gravity so long as airTimer is > 0 and start decrementing the timer
-        //if (!isGrounded && Mathf.Abs(_playerRigidbody.velocity.y) < 2f && _airTimer > 0f)
+        //if (_isJumping && Mathf.Abs(_playerRigidbody.velocity.y) < 2f && _airTimer > 0f)
         //{
         //    Debug.Log(_playerRigidbody.velocity.y);
         //    Debug.Log(_airTimer);
         //    Debug.Log("exactly in the right condition");
-        //    Debug.Log($"Reducing gravity to: {(_playerGravity / Physics2D.gravity.y) * _gravityReducer}");
-        //    _playerRigidbody.gravityScale = (_playerGravity / Physics2D.gravity.y) * _gravityReducer;
-        //    _airTimer -= Time.fixedDeltaTime;
+        //    //Debug.Log($"Reducing gravity to: {(_playerGravity / Physics2D.gravity.y) * _gravityReducer}");
+        //    //_playerRigidbody.gravityScale = (_playerGravity / Physics2D.gravity.y) * _gravityReducer;
+        //    //_airTimer -= Time.fixedDeltaTime;
         //}
 
         if (_playerRigidbody.velocity.y < 0)
