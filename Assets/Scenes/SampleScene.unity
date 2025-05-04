@@ -407,7 +407,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca3bf9b7611162489f8097307a26ac4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 8
+  landMovementSpeed: 8
+  airMovementSpeed: 16
   _groundChecker: {fileID: 613575172}
   _groundCheckerRadius: 0.32
   _jumpVelocity: 0
@@ -420,6 +421,8 @@ MonoBehaviour:
   _jumpTimeMax: 0.15
   _coyoteTime: 0.2
   _jumpBufferTime: 0.2
+  _airTime: 1.5
+  _gravityReducer: 0.4
   _isJumping: 0
   _groundLayer:
     serializedVersion: 2
