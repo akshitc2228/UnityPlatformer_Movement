@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    //movement variables:
+    private float movementSpeed;
     [SerializeField]
-    private float movementSpeed = 8f;
+    private float landMovementSpeed = 8f;
+    [SerializeField]
+    private float airMovementSpeed = 8f;
 
     //player components
     private SpriteRenderer _playerSr;
@@ -127,14 +131,25 @@ public class Movement : MonoBehaviour
         else if (horizontalDirection > 0)
             _playerSr.flipX = false;
 
+        //change speed during airTime
+        //if(!isGrounded && _airTimer > 0f && Mathf.Abs(_playerRigidbody.velocity.y) < 0.1f)
+        //{
+        //    movementSpeed = airMovementSpeed;
+        //}
+        //else
+        //{
+        //    movementSpeed = landMovementSpeed;
+        //}
+
         //dont need to multiply rigidbody props with time delta time; they are inherently frame rate independent
-        _playerRigidbody.velocity = new Vector2(horizontalDirection * movementSpeed, _playerRigidbody.velocity.y);
+        //transition between land and air speeds is not very fluid atm:
+        _playerRigidbody.velocity = new Vector2(horizontalDirection * landMovementSpeed, _playerRigidbody.velocity.y);
     }
 
     void PlayerJumpMovement()
     {
         // Start jump
-        if (_jumpBufferTimer > 0f && _coyoteTimer > 0f)
+        if (Input.GetKey(KeyCode.Space) && _jumpBufferTimer > 0f && _coyoteTimer > 0f)
         {
             _isJumping = true;
             _jumpTimeCounter = _jumpTimeMax;
@@ -166,40 +181,38 @@ public class Movement : MonoBehaviour
 
     void PlayerJumpPhysics()
     {
-        //body velocity:
+        // Apply upward velocity while jump is held and time remains
         if (_isJumping && _jumpTimeCounter > 0 && _playerRigidbody.velocity.y <= _jumpVelocity)
         {
             _playerRigidbody.velocity = new Vector2(_playerRigidbody.velocity.x, _jumpVelocity);
         }
-        //make fall snappy by adding fall multiplier; consider removing in the future:
+
+        // Apply low jump multiplier if jump released early
         if (_isJumping && Input.GetKeyUp(KeyCode.Space))
         {
             _playerRigidbody.velocity = new Vector2(_playerRigidbody.velocity.x, _jumpVelocity * _lowJumpMultiplier);
         }
 
-        //airTime; stops mid-air so only when jumping and velocity is 0 as you start downward descent the condition should fail
-        //reduce gravity so long as airTimer is > 0 and start decrementing the timer
-        //if (_isJumping && Mathf.Abs(_playerRigidbody.velocity.y) < 2f && _airTimer > 0f)
-        //{
-        //    Debug.Log(_playerRigidbody.velocity.y);
-        //    Debug.Log(_airTimer);
-        //    Debug.Log("exactly in the right condition");
-        //    //Debug.Log($"Reducing gravity to: {(_playerGravity / Physics2D.gravity.y) * _gravityReducer}");
-        //    //_playerRigidbody.gravityScale = (_playerGravity / Physics2D.gravity.y) * _gravityReducer;
-        //    //_airTimer -= Time.fixedDeltaTime;
-        //}
-
-        if (_playerRigidbody.velocity.y < 0)
+        // Apex hover: reduce gravity when nearly stationary in air
+        if (!isGrounded && Mathf.Abs(_playerRigidbody.velocity.y) < 0.1f && _airTimer > 0f)
+        {
+            _playerRigidbody.gravityScale = (_playerGravity / Physics2D.gravity.y) * _gravityReducer;
+            //give a slight increase to player horizontal speed to allow more control in the air
+            _playerRigidbody.velocity = new Vector2(_playerRigidbody.velocity.x * 1.5f, _playerRigidbody.velocity.y);
+        }
+        // Falling: increase gravity with fall multiplier
+        else if (_playerRigidbody.velocity.y < 0 && _airTimer <= 0f)
         {
             _playerRigidbody.gravityScale = (_playerGravity / Physics2D.gravity.y) * _fallMultiplier;
-            //clamp falling speed:
             _playerRigidbody.velocity = new Vector2(_playerRigidbody.velocity.x, Mathf.Max(_playerRigidbody.velocity.y, -_maxFallSpeed));
         }
+        // Default gravity when not jumping/falling
         else
         {
             _playerRigidbody.gravityScale = _playerGravity / Physics2D.gravity.y;
         }
     }
+
 
     private void OnDrawGizmosSelected()
     {
