@@ -12,7 +12,6 @@ public class Movement : MonoBehaviour
     private float airMovementSpeed = 8f;
 
     //player components
-    private SpriteRenderer _playerSr;
     private Transform _playerTransform;
     private Rigidbody2D _playerRigidbody;
 
@@ -74,7 +73,6 @@ public class Movement : MonoBehaviour
 
     private void Awake()
     {
-        _playerSr = GetComponent<SpriteRenderer>();
         _playerTransform = GetComponent<Transform>();
         _playerRigidbody = GetComponent<Rigidbody2D>();
     }
@@ -127,9 +125,9 @@ public class Movement : MonoBehaviour
         float horizontalDirection = Input.GetAxis("Horizontal");
 
         if (horizontalDirection < 0)
-            _playerSr.flipX = true;
+            transform.rotation = Quaternion.Euler(0, 180, 0);
         else if (horizontalDirection > 0)
-            _playerSr.flipX = false;
+            transform.rotation = Quaternion.Euler(0, 0, 0);
 
         //change speed during airTime
         //if(!isGrounded && _airTimer > 0f && Mathf.Abs(_playerRigidbody.velocity.y) < 0.1f)
