@@ -29,7 +29,7 @@ public class CameraController : MonoBehaviour
 
     //vertical movement speed variables:
     [SerializeField]
-    float _verticalTransitionSpeed = 1.5f;
+    float _verticalTransitionSpeed = 0.7f;
     [SerializeField]
     private float _verticalSmoothTime;
 
