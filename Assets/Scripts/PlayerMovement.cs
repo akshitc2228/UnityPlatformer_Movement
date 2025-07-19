@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Windows;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -21,10 +20,19 @@ public class PlayerMovement : MonoBehaviour
 
     private Coroutine dashCoroutine;
     private PlayerJump jumpScript;
+    private BoxCollider2D playerCollider;
+
+    private Vector2 defaultColliderSize;
+    private Vector2 defaultColliderOffset;
+    private static readonly Vector2 crouchColliderOffsets = new Vector2(0.0819392204f, -0.392683148f);
+    private static readonly Vector2 crouchColliderSize = new Vector2(1.25884533f, 1.20767879f);
 
     private void Start()
     {
         jumpScript = GetComponent<PlayerJump>();
+        playerCollider = GetComponent<BoxCollider2D>();
+        defaultColliderSize = playerCollider.size;
+        defaultColliderOffset = playerCollider.offset;
     }
 
     public void CheckDirectionFacing(float _directionFacing)
@@ -56,18 +64,33 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void EnterCrouch(bool crouchPressed, Rigidbody2D rb)
-    {
-        IsCrouching = true;
-        float smoothedCrouchSpeed = Mathf.SmoothStep(rb.velocity.x, _directionFacing * landMovementSpeed * crouchSpeedModifier, lateralSpeedSmoothness);
-        rb.velocity = new Vector2(smoothedCrouchSpeed, rb.velocity.y);
-        
-    }
 
-    public void ExitCrouch()
+    public void Crouch(bool crouchPressed, Rigidbody2D rb, bool jumpPressed, bool dashPressed)
     {
-        //Debug.Log("exiting crouch");
-        IsCrouching = false;
+        if ((jumpPressed || dashPressed) && IsCrouching)
+        {
+            IsCrouching = false;
+            playerCollider.size = defaultColliderSize;
+            playerCollider.offset = defaultColliderOffset;
+            return;
+        }
+
+        if (crouchPressed && !IsCrouching)
+        {
+            IsCrouching = true;
+            float smoothedCrouchSpeed = Mathf.SmoothStep(rb.velocity.x, _directionFacing * landMovementSpeed * crouchSpeedModifier, lateralSpeedSmoothness);
+
+            playerCollider.offset = crouchColliderOffsets;
+            playerCollider.size = crouchColliderSize;
+
+            rb.velocity = new Vector2(smoothedCrouchSpeed, rb.velocity.y);
+        }
+        else if (!crouchPressed && IsCrouching)
+        {
+            IsCrouching = false;
+            playerCollider.size = defaultColliderSize;
+            playerCollider.offset = defaultColliderOffset;
+        }
     }
 
     private IEnumerator StopDashing(Rigidbody2D rb)

@@ -10,6 +10,7 @@ public class PlayerAnimator : MonoBehaviour
     private PlayerMovement movement;
 
     private Rigidbody2D playerRb;
+    private bool dashTriggerSetThisFrame = false;
 
     //boolean flagNames for animation:
     private static readonly int xVelocity = Animator.StringToHash("xVelocity");
@@ -33,7 +34,14 @@ public class PlayerAnimator : MonoBehaviour
         playerAnimator.SetFloat(yVelocity, playerRb.velocity.y);
         playerAnimator.SetBool(GroundedFlag, controller.IsGrounded);
         playerAnimator.SetBool(CrouchFlag, movement.IsCrouching);
-        if(movement.IsDashing) 
+        if (movement.IsDashing && !dashTriggerSetThisFrame)
+        {
             playerAnimator.SetTrigger(DashTrigger);
+            dashTriggerSetThisFrame = true;
+        }
+        if (!movement.IsDashing)
+        {
+            dashTriggerSetThisFrame = false;
+        }
     }
 }

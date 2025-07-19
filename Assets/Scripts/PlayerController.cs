@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     [Header("ground check variables")]
     [SerializeField] private Transform groundChecker;
     [SerializeField] private float groundCheckerRadius = 0.18f;
-    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private PhysicsLayerProfile physicsLayers;
 
     private Rigidbody2D rb;
     private PlayerMovement movement;
@@ -43,50 +43,40 @@ public class PlayerController : MonoBehaviour
          **/
 
         crouchHeld = Input.GetKey(KeyCode.LeftShift);
-        crouchReleased = Input.GetKeyUp(KeyCode.LeftShift);
         inputX = Input.GetAxisRaw("Horizontal");
         jumpPressed = Input.GetKeyDown(KeyCode.Space);
         jumpHeld = Input.GetKey(KeyCode.Space);
-        dashPressed = Input.GetKey(KeyCode.RightShift);
-
-        if(crouchReleased)
-
-
-        //Debug.Log($"crouchHeld: {crouchHeld}");
-        //Debug.Log($"crouchReleased: {crouchReleased}");
-        //Debug.Log($"IsCrouching?: {movement.IsCrouching}");
+        dashPressed = Input.GetKey(KeyCode.J);
 
         if(!movement.IsDashing)
         {
-            jump.HandleJumpInput(jumpPressed, jumpHeld);
             wall.TryWallJump(jumpPressed);
+            //Debug.Log("exit wall jump");
+            jump.HandleJumpInput(jumpPressed, jumpHeld);
         }
-
         movement.SetMovementDirection(inputX);
     }
 
     void FixedUpdate()
     {
-
+        IsGrounded = Physics2D.OverlapCircle(groundChecker.transform.position, groundCheckerRadius, physicsLayers.groundLayer | physicsLayers.hybridLayer);
         movement.CheckDirectionFacing(inputX);
         movement.DashPlayer(dashPressed, rb);
-
-        if (!movement.IsDashing)
-        {
-            movement.Move(rb);
-            if (IsGrounded && crouchHeld && !movement.IsCrouching)
-                movement.EnterCrouch(crouchHeld, rb);
-            else if (movement.IsCrouching && (crouchReleased || jumpPressed))
-                movement.ExitCrouch();
-        }
 
         jump.ApplyJumpPhysics(rb, inputX);
 
         wall.SetGravityReference(jump.CurrentGravityScale);
         wall.HandleWallSlide(inputX, IsGrounded);
 
-        IsGrounded = Physics2D.OverlapCircle(groundChecker.transform.position, groundCheckerRadius, groundLayer);
         jump.SetIsGrounded(IsGrounded);
+
+        if (!movement.IsDashing)
+        {
+            movement.Move(rb);
+            if (IsGrounded)
+                movement.Crouch(crouchHeld, rb, jumpHeld, dashPressed);
+        }
+
     }
 
     //DEBUG GIZMO

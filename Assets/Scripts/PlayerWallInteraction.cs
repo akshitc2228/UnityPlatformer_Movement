@@ -9,7 +9,7 @@ public class PlayerWallInteraction : MonoBehaviour
     [SerializeField] private Vector2 wallJumpForce = new Vector2(20f, 30f);
     [SerializeField] private float wallJumpBufferTime = 0.2f;
     [SerializeField] private float wallCoyoteTime = 0.1f;
-    [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private PhysicsLayerProfile physicsLayers;
     [SerializeField] private Transform wallChecker;
     [SerializeField] private float wallCheckerOffset = 0.5f;
     [SerializeField] private float wallCheckDistance = 0.6f;
@@ -26,6 +26,7 @@ public class PlayerWallInteraction : MonoBehaviour
 
     private float _baseGravityScale;
     public void SetGravityReference(float g) => _baseGravityScale = g;
+    public bool TouchingWall { get; private set; }
 
 
     private void Awake()
@@ -40,9 +41,9 @@ public class PlayerWallInteraction : MonoBehaviour
 
         wallCheckDirection = (transform.eulerAngles.y == 180f) ? Vector2.left : Vector2.right;
 
-        bool touchingWall = Physics2D.Raycast(wallCheckOrigin, wallCheckDirection, wallCheckDistance, wallLayer);
+        TouchingWall = Physics2D.Raycast(wallCheckOrigin, wallCheckDirection, wallCheckDistance, physicsLayers.wallLayer | physicsLayers.hybridLayer);
 
-        if (touchingWall && !IsGrounded && inputX != 0)
+        if (TouchingWall && !IsGrounded && inputX != 0)
         {
             wallCoyoteTimer = wallCoyoteTime;
 

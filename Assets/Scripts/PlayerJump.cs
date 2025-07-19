@@ -16,7 +16,6 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private float jumpBufferTime = 0.2f;
     [SerializeField] private float coyoteTime = 0.1f;
     [SerializeField] private float airTime = 0.7f;
-    [SerializeField] private bool enableDoubleJump = true;
 
     private float gravity;
     private float jumpVelocity;
@@ -28,6 +27,7 @@ public class PlayerJump : MonoBehaviour
     private float _airHorzVelRef = 1.5f;
 
     private PlayerMovement movement;
+    private PlayerWallInteraction wall;
 
     //double jump
     private bool hasDoubleJumped;
@@ -39,6 +39,7 @@ public class PlayerJump : MonoBehaviour
     private void Start()
     {
         movement = GetComponent<PlayerMovement>();
+        wall = GetComponent<PlayerWallInteraction>();
 
         gravity = -2 * maxJumpHeight / Mathf.Pow(timeToApex, 2);
         jumpVelocity = 2 * maxJumpHeight / timeToApex;
@@ -57,7 +58,6 @@ public class PlayerJump : MonoBehaviour
             coyoteTimer -= Time.deltaTime;
         }
 
-        //was jumpPressed; revert if issues are found
         if (jumpHeld)
         {
             jumpBufferTimer = jumpBufferTime;
@@ -89,7 +89,7 @@ public class PlayerJump : MonoBehaviour
             }
         }
 
-        if(jumpPressed && !isJumping && enableDoubleJump && !hasDoubleJumped)
+        if(jumpPressed && !isJumping && !hasDoubleJumped && !wall.TouchingWall)
         {
             isJumping = true;
             jumpTimeCounter = jumpTimeMax;

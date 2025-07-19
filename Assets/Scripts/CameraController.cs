@@ -5,12 +5,14 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     //external fields:
+    [Header("External fields")]
     [SerializeField]
     private Transform _playerTransform;
     [SerializeField]
     private Rigidbody2D _playerRb;
 
     //offsets:
+    [Header("Offsets for camera")]
     [SerializeField]
     private float _lateralOffset;
     [SerializeField]
@@ -19,6 +21,7 @@ public class CameraController : MonoBehaviour
     float _neutralLateralOffset = 0.5f;
 
     //transition variables:
+    [Header("Camera transition speeds")]
     [SerializeField]
     private float _movementTransitionSpeed = 0.125f;
     //lateral movement variables:
@@ -26,7 +29,6 @@ public class CameraController : MonoBehaviour
     private float _directionalTransitionSpeed = 1.5f;
     [SerializeField]
     float _directionalSmoothTime;
-
     //vertical movement speed variables:
     [SerializeField]
     float _verticalTransitionSpeed = 0.7f;
@@ -57,9 +59,9 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _lateralOffset = _neutralLateralOffset;
         _forwardFacingOffset = Mathf.Abs(_lateralOffset);
         _backwardFacingOffset = -_forwardFacingOffset;
-        _lateralOffset = _neutralLateralOffset;
 
         transform.position = new Vector3(
             _playerTransform.position.x + _lateralOffset,
