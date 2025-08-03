@@ -1551,7 +1551,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_50
+      name: sand_block_TL
       rect:
         serializedVersion: 2
         x: 240
@@ -1572,7 +1572,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_51
+      name: sand_block_TC
       rect:
         serializedVersion: 2
         x: 272
@@ -1593,7 +1593,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_52
+      name: sand_block_TR
       rect:
         serializedVersion: 2
         x: 304
@@ -1614,7 +1614,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_53
+      name: sand_block_2L
       rect:
         serializedVersion: 2
         x: 240
@@ -1635,7 +1635,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_54
+      name: sand_block_2C
       rect:
         serializedVersion: 2
         x: 272
@@ -1656,7 +1656,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_55
+      name: sand_block_2R
       rect:
         serializedVersion: 2
         x: 304
@@ -1866,7 +1866,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_65
+      name: sand_block_BL
       rect:
         serializedVersion: 2
         x: 240
@@ -1887,7 +1887,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_66
+      name: sand_block_BC
       rect:
         serializedVersion: 2
         x: 272
@@ -1908,7 +1908,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_67
+      name: sand_block_BR
       rect:
         serializedVersion: 2
         x: 304
@@ -3223,110 +3223,110 @@ TextureImporter:
       tileset-sliced_46: 21300092
       tileset-sliced_42: 21300084
       tileset-sliced_110: -2091558954
-      tileset-sliced_52: 21300104
       tileset-sliced_112: -1039533412
       tileset-sliced_15: 21300030
       tileset-sliced_111: -516509527
+      sand_block_BC: -1146504122
       tileset-sliced_90: -591741057
       BasePlatform_MR: 21300050
       tileset-sliced_45: 21300090
       tileset-sliced_94: 1356805907
-      tileset-sliced_91: -1218152210
       tileset-sliced_28: 21300056
-      tileset-sliced_83: -2019880191
       airFlat_Center: -958166428
+      tileset-sliced_83: -2019880191
       tileset-sliced_20: 21300040
+      tileset-sliced_91: -1218152210
+      sand_block_TR: 21300106
       tileset-sliced_16: 21300032
-      tileset-sliced_55: 21300110
-      tileset-sliced_13: 21300026
-      tileset-sliced_47: 21300094
-      tileset-sliced_118: -2048167372
-      BasePlatform_BC: 21300070
-      BasePlatform_MC: 21300048
-      tileset-sliced_5: 21300010
-      tileset-sliced_31: 21300062
-      tileset-sliced_117: -1938035467
-      tileset-sliced_69: -2127735210
-      tileset-sliced_12: 21300024
-      tileset-sliced_115: 176056006
-      tileset-sliced_50: 21300100
-      tileset-sliced_101: -472009167
-      airPlatform_1_LB: -402806553
-      tileset-sliced_30: 21300060
-      tileset-sliced_99: 356564980
-      tileset-sliced_27: 21300054
-      tileset-sliced_54: 21300108
-      tileset-sliced_108: 1372182541
-      tileset-sliced_84: 1528918380
-      tileset-sliced_48: 21300096
-      tileset-sliced_4: 21300008
-      tileset-sliced_72: 772990483
-      tileset-sliced_98: 457718883
-      tileset-sliced_66: -1146504122
-      tileset-sliced_85: 393435982
-      tileset-sliced_32: 21300064
-      tileset-sliced_79: -454035284
-      tileset-sliced_109: -23428462
-      airPlatform_1_L2: 21300114
-      tileset-sliced_106: -987682413
-      tileset-sliced_93: 758458439
-      tileset-sliced_102: -1450480827
-      tileset-sliced_6: 21300012
-      BasePlatform_TL: 21300000
-      BasePlatform_BR: 21300072
-      BasePlatform_BL: 21300068
-      tileset-sliced_88: 1466001968
-      tileset-sliced_124: 641849841
-      tileset-sliced_119: 21966142
-      tileset-sliced_81: 2086579686
-      airFlat_Left: -1952284298
-      tileset-sliced_10: 21300020
-      BasePlatform_TR: 21300004
-      tileset-sliced_96: 1056375511
-      tileset-sliced_41: 21300082
-      tileset-sliced_125: -2036947281
-      tileset-sliced_86: -77968962
-      tileset-sliced_51: 21300102
-      tileset-sliced_92: -64738740
-      tileset-sliced_65: 1570856095
-      tileset-sliced_114: -880423511
-      BasePlatform_TC: 21300002
-      tileset-sliced_116: 281654738
-      tileset-sliced_67: -25084968
-      tileset-sliced_38: 21300076
-      tileset-sliced_121: -160583295
-      tileset-sliced_44: 21300088
-      tileset-sliced_40: 21300080
-      tileset-sliced_22: 21300044
-      tileset-sliced_60: 21300120
-      tileset-sliced_37: 21300074
-      tileset-sliced_49: 21300098
-      tileset-sliced_123: -1809249948
-      tileset-sliced_103: 466450803
-      tileset-sliced_97: -1655255299
-      tileset-sliced_53: 21300106
-      airPlatform_1_R2: 21300118
-      airPlatform_1_TLRB: -657056394
-      tileset-sliced_9: 21300018
-      tileset-sliced_74: -1854451269
-      tileset-sliced_71: -1042185689
-      tileset-sliced_105: -974055963
-      tileset-sliced_70: 16140253
-      tileset-sliced_73: 1836839275
-      tileset-sliced_127: 854183433
-      tileset-sliced_68: 1182706637
-      tileset-sliced_120: -1619586058
-      tileset-sliced_43: 21300086
-      tileset-sliced_17: 21300034
-      airPlatform_1_L1: 21300112
-      tileset-sliced_122: 1443298058
-      tileset-sliced_80: 204943734
-      tileset-sliced_19: 21300038
-      tileset-sliced_14: 21300028
-      tileset-sliced_95: 1378904278
-      tileset-sliced_113: 830307753
-      tileset-sliced_100: -1809934759
-      tileset-sliced_82: 1810914869
+      tileset-sliced_69: 21300024
+      tileset-sliced_13: 21300094
+      tileset-sliced_47: -2048167372
+      BasePlatform_MC: 21300010
+      BasePlatform_BC: 21300048
+      tileset-sliced_5: 21300062
+      tileset-sliced_118: 21300070
+      tileset-sliced_31: -1938035467
+      tileset-sliced_117: -2127735210
+      tileset-sliced_12: 176056006
+      tileset-sliced_115: -472009167
+      tileset-sliced_101: -402806553
+      airPlatform_1_LB: 21300060
+      tileset-sliced_30: 356564980
+      tileset-sliced_99: 21300054
+      tileset-sliced_27: 1372182541
+      tileset-sliced_108: 1528918380
+      tileset-sliced_84: 21300096
+      tileset-sliced_48: 21300008
+      tileset-sliced_4: 772990483
+      tileset-sliced_72: 457718883
+      tileset-sliced_98: -1146504122
+      tileset-sliced_85: 21300064
+      tileset-sliced_32: -454035284
+      tileset-sliced_79: -23428462
+      tileset-sliced_109: 21300114
+      airPlatform_1_L2: -987682413
+      sand_block_2C: 21300110
+      tileset-sliced_106: 758458439
+      tileset-sliced_93: -1450480827
+      tileset-sliced_102: 21300012
+      sand_block_2R: 21300110
+      tileset-sliced_6: 21300000
+      BasePlatform_TL: 21300072
+      sand_block_BL: 1570856095
+      BasePlatform_BR: 21300068
+      BasePlatform_BL: 1466001968
+      tileset-sliced_88: 641849841
+      tileset-sliced_124: 21966142
+      tileset-sliced_119: 2086579686
+      tileset-sliced_81: -1952284298
+      airFlat_Left: 21300020
+      sand_block_BR: -25084968
+      tileset-sliced_10: 21300004
+      BasePlatform_TR: 1056375511
+      tileset-sliced_96: 21300082
+      sand_block_TC: 21300104
+      tileset-sliced_41: -2036947281
+      tileset-sliced_125: -77968962
+      tileset-sliced_86: -64738740
+      tileset-sliced_92: 1570856095
+      tileset-sliced_114: 21300002
+      BasePlatform_TC: 281654738
+      tileset-sliced_116: -25084968
+      tileset-sliced_38: -160583295
+      tileset-sliced_121: 21300088
+      tileset-sliced_44: 21300080
+      tileset-sliced_40: 21300044
+      tileset-sliced_22: 21300120
+      tileset-sliced_60: 21300074
+      tileset-sliced_37: 21300098
+      tileset-sliced_49: -1809249948
+      tileset-sliced_123: 466450803
+      tileset-sliced_103: -1655255299
+      tileset-sliced_97: 21300118
+      airPlatform_1_R2: -657056394
+      airPlatform_1_TLRB: 21300018
+      tileset-sliced_9: -1854451269
+      tileset-sliced_74: -1042185689
+      tileset-sliced_71: -974055963
+      tileset-sliced_105: 16140253
+      tileset-sliced_70: 1836839275
+      tileset-sliced_73: 854183433
+      tileset-sliced_127: 1182706637
+      tileset-sliced_68: -1619586058
+      tileset-sliced_120: 21300086
+      sand_block_2L: 21300108
+      tileset-sliced_43: 21300034
+      tileset-sliced_17: 21300112
+      airPlatform_1_L1: 1443298058
+      tileset-sliced_122: 204943734
+      tileset-sliced_80: 21300038
+      tileset-sliced_19: 21300028
+      tileset-sliced_14: 1378904278
+      tileset-sliced_95: 830307753
+      tileset-sliced_113: -1809934759
+      tileset-sliced_100: 1810914869
+      tileset-sliced_82: 21300100
+      sand_block_TL: 21300102
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

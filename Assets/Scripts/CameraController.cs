@@ -10,6 +10,8 @@ public class CameraController : MonoBehaviour
     private Transform _playerTransform;
     [SerializeField]
     private Rigidbody2D _playerRb;
+    [SerializeField] 
+    private BoxCollider2D sceneBoundObj;
 
     //offsets:
     [Header("Offsets for camera")]
@@ -49,12 +51,18 @@ public class CameraController : MonoBehaviour
     //Camera viewport fields:
     private Camera _mainCamera;
     float _verticalExtent;
+    float cameraHalfWidth;
     float _upperCameraBound;
     float _lowerCameraBound;
     //camera threshold values:
     [SerializeField]
     float _upperThreshold;
     float _lowerThreshold;
+
+    private Bounds sceneBounds;
+
+    //whether we need a setter yet is debatable
+    public Bounds GetSceneBounds() => sceneBounds;
 
     // Start is called before the first frame update
     void Start()
@@ -72,10 +80,14 @@ public class CameraController : MonoBehaviour
         //init the camera and its initial bounds:
         _mainCamera = GetComponent<Camera>();
         _verticalExtent = _mainCamera.orthographicSize;
-        GetCameraBounds();
+        GetVerticalCameraBounds();
+        cameraHalfWidth = _verticalExtent * Camera.main.aspect;
 
         //this should always be fixed
         _lowerThreshold = (_playerTransform.position.y + _verticalOffset) - _lowerCameraBound;
+
+        //define screen bounds
+        sceneBounds = sceneBoundObj.bounds;
     }
 
     private void LateUpdate()
@@ -85,16 +97,22 @@ public class CameraController : MonoBehaviour
         _desiredX = _playerTransform.position.x + _lateralOffset;
 
         //vertical camera movement:
-        GetCameraBounds();
-
-        //clamp to a minValue in case we fall indefinitely
+        GetVerticalCameraBounds();
         _desiredY = GetCameraDesiredY();
 
+        //Combine into desired position
         Vector3 desiredPosition = new Vector3(_desiredX, _desiredY, _desiredZ);
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, _movementTransitionSpeed);
 
+        //Clamp desired position BEFORE applying smoothing
+        float clampedX = Mathf.Clamp(desiredPosition.x, sceneBounds.min.x + cameraHalfWidth, sceneBounds.max.x - cameraHalfWidth);
+        float clampedY = Mathf.Clamp(desiredPosition.y, sceneBounds.min.y + _verticalExtent, sceneBounds.max.y - _verticalExtent);
+        desiredPosition = new Vector3(clampedX, clampedY, _desiredZ);
+
+        // Smooth follow
+        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, _movementTransitionSpeed);
         transform.position = smoothedPosition;
     }
+
 
     void MoveDirectionCamera()
     {
@@ -113,7 +131,7 @@ public class CameraController : MonoBehaviour
 
     }
 
-    void GetCameraBounds()
+    void GetVerticalCameraBounds()
     {
         _upperCameraBound = transform.position.y + _verticalExtent;
         _lowerCameraBound = transform.position.y - _verticalExtent;

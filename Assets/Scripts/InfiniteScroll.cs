@@ -17,14 +17,15 @@ public class InfiniteScroll : MonoBehaviour
     void Awake()
     {
         parallaxLayer = GetComponent<ParallaxBehavior>();
-        scrollThresholdWidth = ComputeVisualWidthFromChildren();
+        //scrollThresholdWidth = ComputeVisualWidthFromChildren();
     }
 
     void Start()
     {
-        Vector3 startAnchor = parallaxLayer.GetAnchor();
-        layerLeftEdge = startAnchor.x - scrollThresholdWidth / 2;
-        layerRightEdge = startAnchor.x + scrollThresholdWidth / 2;
+        //Vector3 startAnchor = parallaxLayer.GetAnchor();
+        //layerLeftEdge = startAnchor.x - scrollThresholdWidth / 2;
+        //layerRightEdge = startAnchor.x + scrollThresholdWidth / 2;
+        ComputeVisualWidthFromChildren();
     }
 
     void Update()
@@ -55,22 +56,31 @@ public class InfiniteScroll : MonoBehaviour
     void ShiftLayer(float amount)
     {
         parallaxLayer.SetAnchor(parallaxLayer.GetAnchor() + new Vector3(amount, 0, 0));
-        layerLeftEdge += amount;
-        layerRightEdge += amount;
+        StartCoroutine(DelayedRecalculateBounds());
     }
 
-    private float ComputeVisualWidthFromChildren()
+    private IEnumerator DelayedRecalculateBounds()
+    {
+        yield return null;
+        ComputeVisualWidthFromChildren();
+    }
+
+
+    private void ComputeVisualWidthFromChildren()
     {
         SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
-        if (sprites.Length == 0) return 0f;
 
-        oneSpriteBound = sprites[0].bounds.size.x;
+        if(sprites.Length > 0)
+        {
+            oneSpriteBound = sprites[0].bounds.size.x;
 
-        Bounds combined = sprites[0].bounds;
-        foreach (var sr in sprites)
-            combined.Encapsulate(sr.bounds);
+            Bounds combined = sprites[0].bounds;
+            foreach (var sr in sprites)
+                combined.Encapsulate(sr.bounds);
 
-        return combined.size.x;
+            layerLeftEdge = combined.min.x;
+            layerRightEdge = combined.max.x;
+        }
     }
 
     private void OnDrawGizmos()
