@@ -8,6 +8,8 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float invincibleTimer = 0.6f;
     private float currentHealth;
 
+    [SerializeField] private FreezeInputEventSO freezeInputs;
+
     private bool isInvincible = false;
     private Coroutine invincibleCoroutine;
 
@@ -16,8 +18,10 @@ public class PlayerHealth : MonoBehaviour
     public int FullHearts { get; private set; }
     public int HalfHearts { get; private set; }
 
+    //EVENTS:
     public event Action OnHealthChanged;
     public event Action OnPlayerHurt;
+    public event Action OnPlayerDeath;
 
     void Start()
     {
@@ -35,6 +39,14 @@ public class PlayerHealth : MonoBehaviour
             RecalculateHearts();
             OnHealthChanged?.Invoke();
             OnPlayerHurt?.Invoke();
+
+            if(currentHealth <= 0f)
+            {
+                OnPlayerDeath?.Invoke();
+                //WARNING: do check this cause we're not lifting this lock anywhere
+                freezeInputs.Raise(true);
+            }
+
             isInvincible = true;
 
             if(invincibleCoroutine == null)

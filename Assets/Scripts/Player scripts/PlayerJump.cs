@@ -8,14 +8,23 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private float maxJumpHeight = 2.5f;
     [SerializeField] private float timeToApex = 0.22f;
     [SerializeField] private float jumpTimeMax = 0.15f;
+
+    [Header("Gravity Modifiers")]
     [SerializeField] private float fallMultiplier = 0.75f;
     [SerializeField] private float lowJumpMultiplier = 0.5f;
     [SerializeField] private float gravityReducer = 0.55f;
+
+    [Header("Air Speed Controls")]
     [SerializeField] private float airSpeedModifier = 1.5f;
+    [SerializeField] float airAcceleration = 30f;
     [SerializeField] private float maxFallSpeed = 15f;
+
+    [Header("Jump Timers")]
     [SerializeField] private float jumpBufferTime = 0.2f;
     [SerializeField] private float coyoteTime = 0.1f;
     [SerializeField] private float airTime = 0.7f;
+
+    [SerializeField] private PhysicsProfile physics;
 
     private float gravity;
     private float jumpVelocity;
@@ -24,7 +33,8 @@ public class PlayerJump : MonoBehaviour
     private float airTimer;
     private float jumpTimeCounter;
     private bool isJumping;
-    private float _airHorzVelRef = 1.5f;
+    //TODO: consider removing
+    //private float _airHorzVelRef = 1.5f;
 
     private PlayerMovement movement;
     private PlayerWallInteraction wall;
@@ -33,8 +43,6 @@ public class PlayerJump : MonoBehaviour
     private bool hasDoubleJumped;
 
     private bool _isGrounded;
-
-    public float CurrentGravityScale { get; private set; }
 
     private void Start()
     {
@@ -105,36 +113,52 @@ public class PlayerJump : MonoBehaviour
 
     public void ApplyJumpPhysics(Rigidbody2D rb, float inputX)
     {
-        if(movement.IsDashing)
+        if (movement.IsDashing)
         {
             isJumping = false;
             return;
         }
-        if (isJumping && jumpTimeCounter > 0f && rb.velocity.y <= jumpVelocity)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
+
+        // Jump sustain
+        float horizontalVelocity = Mathf.Clamp(rb.velocity.x, airSpeedModifier * inputX, rb.velocity.x);
+        if (isJumping && jumpTimeCounter > 0f && rb.velocity.y <= jumpVelocity) {
+            rb.velocity = new Vector2(horizontalVelocity, jumpVelocity);
         }
 
+        // Short hop
         if (isJumping && Input.GetKeyUp(KeyCode.Space))
-        {
             rb.velocity = new Vector2(rb.velocity.x, jumpVelocity * lowJumpMultiplier);
-        }
 
         if (!_isGrounded)
         {
-            if(Mathf.Abs(rb.velocity.y) < 2f && airTimer > 0f)
+            if (Mathf.Abs(rb.velocity.y) < 2f && airTimer > 0f)
             {
                 rb.gravityScale = (gravity / Physics2D.gravity.y) * gravityReducer;
 
-                float targetX = rb.velocity.x * airSpeedModifier * inputX;
-                float newX = Mathf.SmoothDamp(
-                    rb.velocity.x,
-                    targetX,
-                    ref _airHorzVelRef,
-                    0.05f
-                );
+                if (Mathf.Abs(inputX) > 0.01f)
+                {
+                    float targetX = airSpeedModifier * inputX;
+                    float currentX = rb.velocity.x;
 
-                rb.velocity = new Vector2(newX, rb.velocity.y);
+                    if(wall.TouchingWall || wall.IsWallJumping)
+                    {
+                        //whatever thrust is given externally either that or dont fall below a threshold
+                        currentX = Mathf.Clamp(currentX, targetX*1.5f, float.MaxValue);
+                    }
+                    if (Mathf.Sign(currentX) != Mathf.Sign(inputX))
+                    {
+                        //TODO: put this into a const
+                        currentX = targetX * 1.5f;
+                    }
+                    else
+                    {
+                        currentX = Mathf.MoveTowards(currentX, targetX, airAcceleration * Time.fixedDeltaTime);
+                    }
+
+                    // Apply acceleration toward target
+                    float newX = Mathf.MoveTowards(currentX, targetX, airAcceleration * Time.fixedDeltaTime);
+                    rb.velocity = new Vector2(newX, rb.velocity.y);
+                }
 
                 airTimer = Mathf.Max(0f, airTimer - Time.fixedDeltaTime);
             }
@@ -153,8 +177,7 @@ public class PlayerJump : MonoBehaviour
             rb.gravityScale = gravity / Physics2D.gravity.y;
         }
 
-        //CAUTION: Setting currentGravityScale here is risky business; move to conditional blocks if gives trouble
-        CurrentGravityScale = rb.gravityScale;
+        physics.GlobalGravityScaleReference = rb.gravityScale;
     }
 
     public void SetIsGrounded(bool grounded)

@@ -12,6 +12,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashDuration = 0.2f;
     [SerializeField] private float dashCooldown = 0.2f;
 
+    [Header("Sliding params")]
+    [SerializeField] private float maxSlideSpeed = 30f;
+    [SerializeField] private float slideModifier = 1.8f;
+
+    [SerializeField] private PhysicsProfile physics;
+
     public bool IsDashing {  get; private set; }
     public bool IsCrouching { get; private set; }
 
@@ -19,17 +25,20 @@ public class PlayerMovement : MonoBehaviour
     public float DirectionFacing { get; private set; }
 
     private Coroutine dashCoroutine;
-    private PlayerJump jumpScript;
     private BoxCollider2D playerCollider;
 
     private Vector2 defaultColliderSize;
     private Vector2 defaultColliderOffset;
+
+    //this should be part of a scriptable object
     private static readonly Vector2 crouchColliderOffsets = new Vector2(0.0819392204f, -0.392683148f);
     private static readonly Vector2 crouchColliderSize = new Vector2(1.25884533f, 1.20767879f);
 
+    //ref for smoothDamp in the move method
+    private float velocityXSmooth;
+
     private void Start()
     {
-        jumpScript = GetComponent<PlayerJump>();
         playerCollider = GetComponent<BoxCollider2D>();
         defaultColliderSize = playerCollider.size;
         defaultColliderOffset = playerCollider.offset;
@@ -42,11 +51,37 @@ public class PlayerMovement : MonoBehaviour
         else if (_directionFacing > 0)
             transform.rotation = Quaternion.Euler(0, 0, 0);
     }
-
-    public void Move(Rigidbody2D rb)
+    public void Move(Rigidbody2D rb, Vector2 groundNormal, bool isGrounded)
     {
-        float smoothedSpeed = Mathf.SmoothStep(rb.velocity.x, landMovementSpeed * DirectionFacing, lateralSpeedSmoothness);
-        rb.velocity = new Vector2(smoothedSpeed, rb.velocity.y);
+        if (!isGrounded) return; // leave airborne motion to JumpPhysics
+
+        // 1. Calculate slope tangent
+        Vector2 groundTangent = new Vector2(groundNormal.y, -groundNormal.x).normalized;
+
+        // 2. Project current velocity onto tangent
+        float velocityTangent = Vector2.Dot(rb.velocity, groundTangent);
+        float tangentSpeed = velocityTangent;
+
+        float slopeAngle = Vector2.Angle(groundNormal, Vector2.up);
+
+        if (slopeAngle <= 0.1f)
+        {
+            float targetX = DirectionFacing * landMovementSpeed;
+            float smoothed = Mathf.SmoothDamp(rb.velocity.x, targetX, ref velocityXSmooth, lateralSpeedSmoothness);
+            rb.velocity = new Vector2(smoothed, rb.velocity.y);
+            return; // short-circuit, don’t apply tangent logic
+        }
+        else
+        {
+            // Slope: auto-slide
+            float slideDir = Mathf.Sign(Vector2.Dot(Vector2.down, groundTangent));
+            tangentSpeed += slideDir * slideModifier * Time.fixedDeltaTime;
+            tangentSpeed = Mathf.Clamp(tangentSpeed, -maxSlideSpeed, maxSlideSpeed);
+        }
+
+        // Apply slope-aware X velocity
+        Vector2 tangentVelocity = groundTangent * tangentSpeed;
+        rb.velocity = new Vector2(tangentVelocity.x, rb.velocity.y);
     }
 
     public void DashPlayer(bool dashPressed, Rigidbody2D rb)
@@ -98,7 +133,7 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(dashDuration);
 
         IsDashing = false;
-        rb.gravityScale = jumpScript.CurrentGravityScale;
+        rb.gravityScale = physics.GlobalGravityScaleReference;
 
         yield return new WaitForSeconds(dashCooldown);
 

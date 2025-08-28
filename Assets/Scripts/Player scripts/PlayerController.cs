@@ -5,9 +5,14 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("ground check variables")]
-    [SerializeField] private Transform groundChecker;
-    [SerializeField] private float groundCheckerRadius = 0.18f;
-    [SerializeField] private PhysicsLayerProfile physicsLayers;
+    //old way to check grounded; experimenting with raycasts now
+    //[SerializeField] private Transform groundChecker;
+    //[SerializeField] private float groundCheckerRadius = 0.18f;
+
+    [SerializeField] private Transform leftLeg;
+    [SerializeField] private Transform rightLeg;
+    [SerializeField] private float legRayLength;
+
 
     [Header("Damage variables")]
     [SerializeField] private float knockbackForceX = 10f;
@@ -15,6 +20,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float knockbackVelSmoothTime = 0.2f;
     //right now consistent with the time in which the trigger resets
     [SerializeField] private float damageModeTimer = 0.2f;
+
+    [Header("External calls")]
+    [SerializeField] private FreezeInputEventSO freezeInputEvent;
+    [SerializeField] private PhysicsProfile physicsLayers;
 
     private bool isHurt = false;
     private Coroutine playerHurtCoroutine;
@@ -34,12 +43,27 @@ public class PlayerController : MonoBehaviour
     private bool crouchHeld;
     private bool crouchReleased;
 
+    private bool allowInputs = true;
+
     public bool IsGrounded {  get; private set; }
+    public Vector2 surfaceNormal { get; private set; }
 
     private void OnEnable()
     {
         playerHealth = GetComponent<PlayerHealth>();
         playerHealth.OnPlayerHurt += KnockBackPlayer;
+        freezeInputEvent.FreezePlayerInput += HandleFreeze;
+    }
+
+    private void OnDisable()
+    {
+        PlayerHealth health = GetComponent<PlayerHealth>();
+        if (health != null)
+            playerHealth.OnPlayerHurt -= KnockBackPlayer;
+        if(freezeInputEvent != null)
+        {
+            freezeInputEvent.FreezePlayerInput -= HandleFreeze;
+        }
     }
 
     private void Awake()
@@ -48,10 +72,14 @@ public class PlayerController : MonoBehaviour
         movement = GetComponent<PlayerMovement>();
         jump = GetComponent<PlayerJump>();
         wall = GetComponent<PlayerWallInteraction>();
+
+        surfaceNormal = Vector2.up;
     }
 
     void Update()
     {
+        if (!allowInputs) return;
+
         //A KEY PERSONAL NOTE REGARDING INPUTS:
         /**
          * GetKeyDown fires only for 1 frame when the key is first pressed;
@@ -80,30 +108,48 @@ public class PlayerController : MonoBehaviour
     {
         //some of these would need to be carefully scoped in an if where isHurt is true; in that scope dont trigger those functions
         //in fact we need to do a similar logic for animation as well probs but one at a time
-        IsGrounded = Physics2D.OverlapCircle(groundChecker.transform.position, groundCheckerRadius, physicsLayers.groundLayer | physicsLayers.hybridLayer);
-        movement.CheckDirectionFacing(inputX);
-        wall.SetGravityReference(jump.CurrentGravityScale);
-        jump.SetIsGrounded(IsGrounded);
+        RaycastHit2D leftLegGrounded = Physics2D.Raycast(leftLeg.position, Vector3.down, legRayLength, physicsLayers.groundLayer | physicsLayers.hybridLayer); 
+        RaycastHit2D rightLegGrounded = Physics2D.Raycast(rightLeg.position, Vector3.down, legRayLength, physicsLayers.groundLayer | physicsLayers.hybridLayer);
 
-        if (isHurt) return;
-
-        movement.DashPlayer(dashPressed, rb);
-
-        jump.ApplyJumpPhysics(rb, inputX);
-
-        wall.HandleWallSlide(inputX, IsGrounded);
-
-        if (!movement.IsDashing)
+        IsGrounded = leftLegGrounded.collider || rightLegGrounded.collider;
+        if (IsGrounded)
         {
-            movement.Move(rb);
-            if (IsGrounded)
-                movement.Crouch(crouchHeld, rb, jumpHeld, dashPressed);
+            if(leftLegGrounded.collider && rightLegGrounded.collider)
+            {
+                surfaceNormal = ((leftLegGrounded.normal + rightLegGrounded.normal) * 0.5f).normalized;
+            }
+            else if(leftLegGrounded.collider)
+            {
+                surfaceNormal = leftLegGrounded.normal.normalized;
+            }
+            else
+            {
+                surfaceNormal = rightLegGrounded.normal.normalized;
+            }
         }
+
+        movement.CheckDirectionFacing(inputX);
+        //should be a global variable; something that goes in a SO
+        jump.SetIsGrounded(IsGrounded);
 
         if(isHurt)
         {
             knockbackVelocity = Vector2.SmoothDamp(knockbackVelocity, Vector2.zero, ref knockbackVelocityRef, knockbackVelSmoothTime);
             rb.velocity += knockbackVelocity;
+            return;
+        }
+
+        movement.DashPlayer(dashPressed, rb);
+
+        jump.ApplyJumpPhysics(rb, inputX);
+
+        wall.HandleWallSlide(IsGrounded, inputX);
+
+        if (!movement.IsDashing)
+        {
+            movement.Move(rb, surfaceNormal, IsGrounded);
+            if (IsGrounded)
+                movement.Crouch(crouchHeld, rb, jumpHeld, dashPressed);
         }
     }
 
@@ -137,17 +183,19 @@ public class PlayerController : MonoBehaviour
     //DEBUG GIZMO
     private void OnDrawGizmosSelected()
     {
-        if(groundChecker != null)
+        //if(groundChecker != null)
+        //{
+        //    Gizmos.color = Color.red;
+        //    Gizmos.DrawWireSphere(groundChecker.transform.position, groundCheckerRadius);
+        //}
+
+        if(leftLeg && rightLeg)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(groundChecker.transform.position, groundCheckerRadius);
+            Gizmos.DrawRay(leftLeg.position, Vector2.down * legRayLength);
+            Gizmos.DrawRay(rightLeg.position, Vector2.down * legRayLength);
         }
     }
 
-    private void OnDisable()
-    {
-        PlayerHealth health = GetComponent<PlayerHealth>();
-        if (health != null)
-            playerHealth.OnPlayerHurt -= KnockBackPlayer;
-    }
+    void HandleFreeze(bool freeze) => allowInputs = !freeze;
 }

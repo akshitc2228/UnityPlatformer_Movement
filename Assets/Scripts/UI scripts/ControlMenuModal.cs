@@ -4,11 +4,24 @@ using UnityEngine;
 
 public class ControlMenuModal : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject OptionsPanel;
+    [SerializeField] protected GameObject controlledPanel;
 
-    private void Awake() => OptionsPanel.SetActive(false);
+    protected virtual void Awake()
+    {
+        if (controlledPanel != null)
+            controlledPanel.SetActive(false);
+    }
 
-    public void ShowModal() => OptionsPanel.SetActive(true);
-    public void HideModal() => OptionsPanel.SetActive(false);
+    public virtual void ShowModal()
+    {
+        if (controlledPanel != null)
+            controlledPanel.SetActive(true);
+    }
+
+    public virtual void HideModal()
+    {
+        if (controlledPanel != null)
+            controlledPanel.SetActive(false);
+    }
 }
+

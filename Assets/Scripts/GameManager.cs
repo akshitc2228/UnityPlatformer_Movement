@@ -9,24 +9,23 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     public GameState CurrentState { get; private set; }
 
-    void Awake()
+    private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
+            return;
         }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
+
 
 
     public void StartGame()
     {
         CurrentState = GameState.Playing;
-        SceneManager.LoadScene("Scenery");
+        SceneManager.LoadScene("MainLevel");
     }
 
     public void ReturnToMenu()

@@ -512,8 +512,12 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
-      tessellationDetail: 0
+      physicsShape:
+      - - {x: -8, y: 8}
+        - {x: -8, y: -8}
+        - {x: 8, y: -8}
+        - {x: 8, y: 8}
+      tessellationDetail: 1
       bones: []
       spriteID: 02305410000000000800000000000000
       internalID: 21300000
@@ -743,8 +747,17 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
-      tessellationDetail: 0
+      physicsShape:
+      - - {x: -8, y: -8}
+        - {x: -8, y: -8}
+        - {x: 8, y: -8}
+        - {x: 8, y: 2}
+        - {x: 8, y: 1}
+      - - {x: 8, y: 1}
+        - {x: 8, y: 2}
+        - {x: 8, y: 1}
+        - {x: 8, y: 1}
+      tessellationDetail: 1
       bones: []
       spriteID: 63305410000000000800000000000000
       internalID: 21300022
@@ -764,8 +777,13 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
-      tessellationDetail: 0
+      physicsShape:
+      - - {x: 1, y: 5}
+        - {x: -8, y: 1}
+        - {x: -8, y: -8}
+        - {x: 8, y: -8}
+        - {x: 8, y: 8}
+      tessellationDetail: 1
       bones: []
       spriteID: 83305410000000000800000000000000
       internalID: 21300024
@@ -774,7 +792,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_13
+      name: descending_tileTL
       rect:
         serializedVersion: 2
         x: 352
@@ -785,8 +803,17 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
-      tessellationDetail: 0
+      physicsShape:
+      - - {x: -8, y: 8}
+        - {x: -8, y: -8}
+        - {x: 8, y: -8}
+        - {x: 8, y: 0}
+        - {x: 2, y: 3}
+      - - {x: 7, y: 2}
+        - {x: 7, y: 3}
+        - {x: 7, y: 3}
+        - {x: 7, y: 2}
+      tessellationDetail: 1
       bones: []
       spriteID: a3305410000000000800000000000000
       internalID: 21300026
@@ -795,7 +822,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_14
+      name: descending_tileTR
       rect:
         serializedVersion: 2
         x: 368
@@ -806,8 +833,13 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
-      tessellationDetail: 0
+      physicsShape:
+      - - {x: -8, y: 0}
+        - {x: -8, y: -8}
+        - {x: 8, y: -8}
+        - {x: 8, y: -8}
+        - {x: 0, y: -4}
+      tessellationDetail: 1
       bones: []
       spriteID: c3305410000000000800000000000000
       internalID: 21300028
@@ -942,7 +974,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_21
+      name: descending_tileBL
       rect:
         serializedVersion: 2
         x: 352
@@ -963,7 +995,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_22
+      name: descending_tileBR
       rect:
         serializedVersion: 2
         x: 368
@@ -3216,7 +3248,6 @@ TextureImporter:
       tileset-sliced_39: 21300078
       tileset-sliced_62: 836369481
       BasePlatform_ML: 21300046
-      tileset-sliced_21: 21300042
       tileset-sliced_26: 21300052
       tileset-sliced_78: -1038546666
       tileset-sliced_126: -1291527422
@@ -3229,17 +3260,16 @@ TextureImporter:
       sand_block_BC: -1146504122
       tileset-sliced_90: -591741057
       BasePlatform_MR: 21300050
-      tileset-sliced_45: 21300090
       tileset-sliced_94: 1356805907
-      tileset-sliced_28: 21300056
       airFlat_Center: -958166428
+      tileset-sliced_91: -1218152210
+      tileset-sliced_45: 21300090
       tileset-sliced_83: -2019880191
       tileset-sliced_20: 21300040
-      tileset-sliced_91: -1218152210
+      tileset-sliced_28: 21300056
       sand_block_TR: 21300106
       tileset-sliced_16: 21300032
       tileset-sliced_69: 21300024
-      tileset-sliced_13: 21300094
       tileset-sliced_47: -2048167372
       BasePlatform_MC: 21300010
       BasePlatform_BC: 21300048
@@ -3255,6 +3285,7 @@ TextureImporter:
       tileset-sliced_99: 21300054
       tileset-sliced_27: 1372182541
       tileset-sliced_108: 1528918380
+      descending_tileBR: 21300044
       tileset-sliced_84: 21300096
       tileset-sliced_48: 21300008
       tileset-sliced_4: 772990483
@@ -3279,10 +3310,10 @@ TextureImporter:
       tileset-sliced_124: 21966142
       tileset-sliced_119: 2086579686
       tileset-sliced_81: -1952284298
-      airFlat_Left: 21300020
       sand_block_BR: -25084968
       tileset-sliced_10: 21300004
       BasePlatform_TR: 1056375511
+      airFlat_Left: 21300020
       tileset-sliced_96: 21300082
       sand_block_TC: 21300104
       tileset-sliced_41: -2036947281
@@ -3290,13 +3321,14 @@ TextureImporter:
       tileset-sliced_86: -64738740
       tileset-sliced_92: 1570856095
       tileset-sliced_114: 21300002
+      descending_tileBL: 21300042
       BasePlatform_TC: 281654738
       tileset-sliced_116: -25084968
+      descending_tileTR: 21300028
       tileset-sliced_38: -160583295
       tileset-sliced_121: 21300088
       tileset-sliced_44: 21300080
       tileset-sliced_40: 21300044
-      tileset-sliced_22: 21300120
       tileset-sliced_60: 21300074
       tileset-sliced_37: 21300098
       tileset-sliced_49: -1809249948
@@ -3321,12 +3353,12 @@ TextureImporter:
       tileset-sliced_122: 204943734
       tileset-sliced_80: 21300038
       tileset-sliced_19: 21300028
-      tileset-sliced_14: 1378904278
+      sand_block_TL: 21300102
       tileset-sliced_95: 830307753
+      descending_tileTL: 21300026
       tileset-sliced_113: -1809934759
       tileset-sliced_100: 1810914869
       tileset-sliced_82: 21300100
-      sand_block_TL: 21300102
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
