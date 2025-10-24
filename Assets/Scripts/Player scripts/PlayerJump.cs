@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerJump : MonoBehaviour
@@ -82,6 +83,10 @@ public class PlayerJump : MonoBehaviour
             hasDoubleJumped = false;
             jumpTimeCounter = jumpTimeMax;
         }
+        if(wall.TouchingWall && hasDoubleJumped)
+        {
+            hasDoubleJumped = false;
+        }
 
         if(jumpHeld && isJumping)
         {
@@ -97,7 +102,7 @@ public class PlayerJump : MonoBehaviour
             }
         }
 
-        if(jumpPressed && !isJumping && !hasDoubleJumped && !wall.TouchingWall)
+        if(jumpPressed && !isJumping && !hasDoubleJumped)
         {
             isJumping = true;
             jumpTimeCounter = jumpTimeMax;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
@@ -7,6 +8,11 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float playerMaxHealth = 150f;
     [SerializeField] private float invincibleTimer = 0.6f;
     private float currentHealth;
+
+    [SerializeField] private SceneBoundsSO sceneBoundsSO;
+
+    //getter for currentHealth
+    public float GetCurrentHealth() => currentHealth;
 
     [SerializeField] private FreezeInputEventSO freezeInputs;
 
@@ -28,6 +34,17 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = playerMaxHealth;
         RecalculateHearts();
         OnHealthChanged?.Invoke();
+    }
+
+    private void Update()
+    {
+        if (currentHealth <= 0f) return;
+        Vector3 pos = this.transform.position;
+        //we hit rock bottom
+        if(Mathf.Approximately(pos.y, sceneBoundsSO.minY) )
+        {
+            ReduceCurrentHealth(currentHealth);
+        }
     }
 
     public void ReduceCurrentHealth(float damageAmount)

@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - FlippingRange_1
+  - SlopeAndKhai
+  - SceneBounds
+  - dunegon_1_pushableBox1
   layers:
   - Default
   - TransparentFX

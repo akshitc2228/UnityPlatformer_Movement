@@ -102,8 +102,6 @@ public class PlayerAnimator : MonoBehaviour
 
     private void PlayDeathAnimation()
     {
-        //freeze all input first
-        freezeInputEvent.Raise(true);
         playerAnimator.SetTrigger(DeathTrigger);
         if(deathPauseCoroutine == null)
         {

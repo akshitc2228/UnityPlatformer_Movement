@@ -18,12 +18,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float knockbackForceX = 10f;
     [SerializeField] private float knockbackForceY = 10f;
     [SerializeField] private float knockbackVelSmoothTime = 0.2f;
-    //right now consistent with the time in which the trigger resets
     [SerializeField] private float damageModeTimer = 0.2f;
 
     [Header("External calls")]
     [SerializeField] private FreezeInputEventSO freezeInputEvent;
     [SerializeField] private PhysicsProfile physicsLayers;
+    [SerializeField] private SceneBoundsSO sceneBounds;
 
     private bool isHurt = false;
     private Coroutine playerHurtCoroutine;
@@ -104,6 +104,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void LateUpdate()
+    {
+
+        Vector3 pos = transform.position;
+        pos.x = Mathf.Clamp(pos.x, sceneBounds.minX, sceneBounds.maxX);
+        //temp for now but soon playerDeath should use this to kill player on collision with the lower bounds
+        pos.y = Mathf.Clamp(pos.y, sceneBounds.minY, sceneBounds.maxY);
+        transform.position = pos;
+    }
+
     void FixedUpdate()
     {
         //some of these would need to be carefully scoped in an if where isHurt is true; in that scope dont trigger those functions
@@ -126,6 +136,16 @@ public class PlayerController : MonoBehaviour
             {
                 surfaceNormal = rightLegGrounded.normal.normalized;
             }
+
+            ////adding a magnetic stickiness; REMOVE IF ISSUES ARE SPOTTED:
+            //if(rb.velocity.y <= 0f)
+            //{
+            //    const float stickForce = 15f;
+            //    rb.AddForce(Vector2.down * stickForce, ForceMode2D.Force);
+
+            //    if (rb.velocity.y < -2f)
+            //        rb.velocity = new Vector2(rb.velocity.x, -2f);
+            //}
         }
 
         movement.CheckDirectionFacing(inputX);
@@ -147,7 +167,7 @@ public class PlayerController : MonoBehaviour
 
         if (!movement.IsDashing)
         {
-            movement.Move(rb, surfaceNormal, IsGrounded);
+            movement.Move(rb, surfaceNormal, IsGrounded, inputX);
             if (IsGrounded)
                 movement.Crouch(crouchHeld, rb, jumpHeld, dashPressed);
         }
@@ -167,6 +187,8 @@ public class PlayerController : MonoBehaviour
 
         rb.velocity = Vector2.zero;
         rb.AddForce(knockbackDirection, ForceMode2D.Impulse);
+        Debug.Log("Knockback Velocity: " + rb.velocity);
+        Debug.Log(physicsLayers.GlobalGravityScaleReference);
 
         if (playerHurtCoroutine == null)
            StartCoroutine(RemoveHurtEventLock());

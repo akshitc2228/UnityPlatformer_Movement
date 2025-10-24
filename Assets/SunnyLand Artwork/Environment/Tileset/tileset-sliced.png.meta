@@ -589,7 +589,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_4
+      name: log_right1
       rect:
         serializedVersion: 2
         x: 144
@@ -610,7 +610,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_5
+      name: log_right2
       rect:
         serializedVersion: 2
         x: 160
@@ -631,7 +631,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_6
+      name: log_right3
       rect:
         serializedVersion: 2
         x: 176
@@ -736,7 +736,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_11
+      name: ascending_tileTL
       rect:
         serializedVersion: 2
         x: 304
@@ -766,7 +766,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_12
+      name: ascending_tileTR
       rect:
         serializedVersion: 2
         x: 320
@@ -932,7 +932,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_19
+      name: ascending_tileBL
       rect:
         serializedVersion: 2
         x: 304
@@ -953,7 +953,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_20
+      name: ascending_tileBR
       rect:
         serializedVersion: 2
         x: 320
@@ -1310,7 +1310,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_37
+      name: log_left3
       rect:
         serializedVersion: 2
         x: 112
@@ -1320,8 +1320,16 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
+      outline:
+      - - {x: -8, y: -8}
+        - {x: -8, y: 8}
+        - {x: 8, y: 8}
+        - {x: 8, y: -8}
+      physicsShape:
+      - - {x: -8, y: -8}
+        - {x: -8, y: 8}
+        - {x: 8, y: 8}
+        - {x: 8, y: -8}
       tessellationDetail: 0
       bones: []
       spriteID: a6305410000000000800000000000000
@@ -1331,7 +1339,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_38
+      name: log_left2
       rect:
         serializedVersion: 2
         x: 128
@@ -1342,7 +1350,11 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -8, y: 8}
+        - {x: -8, y: 1}
+        - {x: 8, y: 1}
+        - {x: 8, y: 8}
       tessellationDetail: 0
       bones: []
       spriteID: c6305410000000000800000000000000
@@ -1352,7 +1364,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_39
+      name: log_left1
       rect:
         serializedVersion: 2
         x: 144
@@ -1363,7 +1375,11 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -8, y: 1}
+        - {x: -8, y: 8}
+        - {x: 8, y: 8}
+        - {x: 8, y: 1}
       tessellationDetail: 0
       bones: []
       spriteID: e6305410000000000800000000000000
@@ -1730,7 +1746,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: airPlatform_1_L2
+      name: airPlatform_center
       rect:
         serializedVersion: 2
         x: 32
@@ -1751,7 +1767,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: airPlatform_1_R1
+      name: airPlatform_center2
       rect:
         serializedVersion: 2
         x: 64
@@ -2097,8 +2113,16 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
+      outline:
+      - - {x: -5, y: 8}
+        - {x: -2, y: -1}
+        - {x: 1, y: -1}
+        - {x: 3, y: 8}
+      physicsShape:
+      - - {x: -5, y: 8}
+        - {x: -2, y: -1}
+        - {x: 0, y: -1}
+        - {x: 3, y: 8}
       tessellationDetail: 0
       bones: []
       spriteID: 56d46af716de9f8489fbce333cf23d1b
@@ -2171,7 +2195,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_78
+      name: caveEdge_left1
       rect:
         serializedVersion: 2
         x: 16
@@ -2192,7 +2216,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_79
+      name: caveEdge_left2
       rect:
         serializedVersion: 2
         x: 32
@@ -2213,7 +2237,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_80
+      name: caveEdge_right1
       rect:
         serializedVersion: 2
         x: 64
@@ -2234,7 +2258,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_81
+      name: caveEdge_right2
       rect:
         serializedVersion: 2
         x: 80
@@ -2276,7 +2300,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_83
+      name: caveEdge_left3
       rect:
         serializedVersion: 2
         x: 32
@@ -2297,7 +2321,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_84
+      name: caveEdge_right3
       rect:
         serializedVersion: 2
         x: 64
@@ -2318,7 +2342,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_85
+      name: underground_tile1
       rect:
         serializedVersion: 2
         x: 176
@@ -2339,7 +2363,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_86
+      name: dungeon_shelf1
       rect:
         serializedVersion: 2
         x: 224
@@ -2360,7 +2384,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_87
+      name: dungeon_shelf2
       rect:
         serializedVersion: 2
         x: 240
@@ -2444,7 +2468,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_91
+      name: caveEdge_left4
       rect:
         serializedVersion: 2
         x: 16
@@ -2465,7 +2489,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_92
+      name: caveEdge_left5
       rect:
         serializedVersion: 2
         x: 32
@@ -2486,7 +2510,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_93
+      name: caveEdge_right4
       rect:
         serializedVersion: 2
         x: 64
@@ -2507,7 +2531,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_94
+      name: caveEdge_right5
       rect:
         serializedVersion: 2
         x: 80
@@ -2528,7 +2552,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_95
+      name: underground_tile2
       rect:
         serializedVersion: 2
         x: 176
@@ -2549,7 +2573,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_96
+      name: dungeon_shelf3
       rect:
         serializedVersion: 2
         x: 224
@@ -2570,7 +2594,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_97
+      name: dungeon_shelf4
       rect:
         serializedVersion: 2
         x: 240
@@ -2591,7 +2615,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_98
+      name: caveEdge_left6
       rect:
         serializedVersion: 2
         x: 16
@@ -2612,7 +2636,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_99
+      name: caveEdge_left7
       rect:
         serializedVersion: 2
         x: 32
@@ -2633,7 +2657,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_100
+      name: caveEdge_right6
       rect:
         serializedVersion: 2
         x: 64
@@ -2654,7 +2678,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_101
+      name: caveEdge_right7
       rect:
         serializedVersion: 2
         x: 80
@@ -2675,7 +2699,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_102
+      name: underground_tile3
       rect:
         serializedVersion: 2
         x: 160
@@ -2696,7 +2720,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_103
+      name: underground_tile4
       rect:
         serializedVersion: 2
         x: 176
@@ -2717,7 +2741,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_104
+      name: underground_tile5
       rect:
         serializedVersion: 2
         x: 192
@@ -2738,7 +2762,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_105
+      name: dungeon_shelf5
       rect:
         serializedVersion: 2
         x: 224
@@ -2759,7 +2783,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_106
+      name: dungeon_shelf6
       rect:
         serializedVersion: 2
         x: 240
@@ -2801,7 +2825,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_108
+      name: underground_tile_extra
       rect:
         serializedVersion: 2
         x: 304
@@ -2906,7 +2930,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_113
+      name: grassyBlock_left_top1
       rect:
         serializedVersion: 2
         x: 144
@@ -2927,7 +2951,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_114
+      name: grassyBlock_left_top2
       rect:
         serializedVersion: 2
         x: 160
@@ -2948,7 +2972,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_115
+      name: grassyBlock_left_top3
       rect:
         serializedVersion: 2
         x: 176
@@ -2969,7 +2993,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_116
+      name: grassyBlock_right_top1
       rect:
         serializedVersion: 2
         x: 208
@@ -2990,7 +3014,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_117
+      name: grassyBlock_right_top2
       rect:
         serializedVersion: 2
         x: 224
@@ -3011,7 +3035,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_118
+      name: grassyBlock_right_top3
       rect:
         serializedVersion: 2
         x: 240
@@ -3095,7 +3119,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_122
+      name: grassyBlock_left_bottom1
       rect:
         serializedVersion: 2
         x: 144
@@ -3116,7 +3140,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_123
+      name: grassyBlock_left_bottom2
       rect:
         serializedVersion: 2
         x: 160
@@ -3137,7 +3161,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_124
+      name: grassyBlock_left_bottom3
       rect:
         serializedVersion: 2
         x: 176
@@ -3158,7 +3182,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_125
+      name: grassyBlock_right_bottom1
       rect:
         serializedVersion: 2
         x: 208
@@ -3179,7 +3203,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_126
+      name: grassyBlock_right_bottom2
       rect:
         serializedVersion: 2
         x: 224
@@ -3200,7 +3224,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tileset-sliced_127
+      name: grassyBlock_right_bottom3
       rect:
         serializedVersion: 2
         x: 240
@@ -3231,134 +3255,134 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      tileset-sliced_11: 21300022
+      dungeon_shelf1: 458691838
+      ascending_tileTR: 21300024
+      grassyBlock_right_bottom2: -1291527422
+      underground_tile3: -1450480827
+      caveEdge_left2: -454035284
       tileset-sliced_107: -304822416
+      underground_tile5: 770356663
       tileset-sliced_3: 21300006
+      caveEdge_left5: -64738740
       tileset-sliced_29: 21300058
       tileset-sliced_61: 21300122
       tileset-sliced_33: 21300066
       tileset-sliced_7: 21300014
-      airPlatform_1_R1: 21300116
       airFlat_Right: -1270257889
       tileset-sliced_18: 21300036
       tileset-sliced_89: -11218104
       tileset-sliced_8: 21300016
-      tileset-sliced_87: 458691838
-      tileset-sliced_104: 770356663
-      tileset-sliced_39: 21300078
-      tileset-sliced_62: 836369481
-      BasePlatform_ML: 21300046
-      tileset-sliced_26: 21300052
-      tileset-sliced_78: -1038546666
-      tileset-sliced_126: -1291527422
-      tileset-sliced_46: 21300092
-      tileset-sliced_42: 21300084
-      tileset-sliced_110: -2091558954
-      tileset-sliced_112: -1039533412
-      tileset-sliced_15: 21300030
-      tileset-sliced_111: -516509527
-      sand_block_BC: -1146504122
-      tileset-sliced_90: -591741057
-      BasePlatform_MR: 21300050
-      tileset-sliced_94: 1356805907
-      airFlat_Center: -958166428
-      tileset-sliced_91: -1218152210
-      tileset-sliced_45: 21300090
-      tileset-sliced_83: -2019880191
-      tileset-sliced_20: 21300040
-      tileset-sliced_28: 21300056
-      sand_block_TR: 21300106
-      tileset-sliced_16: 21300032
-      tileset-sliced_69: 21300024
-      tileset-sliced_47: -2048167372
-      BasePlatform_MC: 21300010
-      BasePlatform_BC: 21300048
-      tileset-sliced_5: 21300062
-      tileset-sliced_118: 21300070
-      tileset-sliced_31: -1938035467
-      tileset-sliced_117: -2127735210
-      tileset-sliced_12: 176056006
-      tileset-sliced_115: -472009167
-      tileset-sliced_101: -402806553
-      airPlatform_1_LB: 21300060
-      tileset-sliced_30: 356564980
-      tileset-sliced_99: 21300054
-      tileset-sliced_27: 1372182541
-      tileset-sliced_108: 1528918380
-      descending_tileBR: 21300044
-      tileset-sliced_84: 21300096
-      tileset-sliced_48: 21300008
-      tileset-sliced_4: 772990483
-      tileset-sliced_72: 457718883
-      tileset-sliced_98: -1146504122
-      tileset-sliced_85: 21300064
-      tileset-sliced_32: -454035284
-      tileset-sliced_79: -23428462
-      tileset-sliced_109: 21300114
-      airPlatform_1_L2: -987682413
-      sand_block_2C: 21300110
-      tileset-sliced_106: 758458439
-      tileset-sliced_93: -1450480827
-      tileset-sliced_102: 21300012
-      sand_block_2R: 21300110
-      tileset-sliced_6: 21300000
-      BasePlatform_TL: 21300072
-      sand_block_BL: 1570856095
-      BasePlatform_BR: 21300068
-      BasePlatform_BL: 1466001968
-      tileset-sliced_88: 641849841
-      tileset-sliced_124: 21966142
-      tileset-sliced_119: 2086579686
-      tileset-sliced_81: -1952284298
-      sand_block_BR: -25084968
-      tileset-sliced_10: 21300004
-      BasePlatform_TR: 1056375511
-      airFlat_Left: 21300020
-      tileset-sliced_96: 21300082
-      sand_block_TC: 21300104
-      tileset-sliced_41: -2036947281
-      tileset-sliced_125: -77968962
-      tileset-sliced_86: -64738740
-      tileset-sliced_92: 1570856095
-      tileset-sliced_114: 21300002
-      descending_tileBL: 21300042
-      BasePlatform_TC: 281654738
-      tileset-sliced_116: -25084968
-      descending_tileTR: 21300028
-      tileset-sliced_38: -160583295
-      tileset-sliced_121: 21300088
-      tileset-sliced_44: 21300080
-      tileset-sliced_40: 21300044
-      tileset-sliced_60: 21300074
-      tileset-sliced_37: 21300098
-      tileset-sliced_49: -1809249948
-      tileset-sliced_123: 466450803
-      tileset-sliced_103: -1655255299
-      tileset-sliced_97: 21300118
-      airPlatform_1_R2: -657056394
-      airPlatform_1_TLRB: 21300018
-      tileset-sliced_9: -1854451269
-      tileset-sliced_74: -1042185689
-      tileset-sliced_71: -974055963
-      tileset-sliced_105: 16140253
-      tileset-sliced_70: 1836839275
-      tileset-sliced_73: 854183433
-      tileset-sliced_127: 1182706637
-      tileset-sliced_68: -1619586058
-      tileset-sliced_120: 21300086
-      sand_block_2L: 21300108
-      tileset-sliced_43: 21300034
-      tileset-sliced_17: 21300112
-      airPlatform_1_L1: 1443298058
-      tileset-sliced_122: 204943734
-      tileset-sliced_80: 21300038
-      tileset-sliced_19: 21300028
-      sand_block_TL: 21300102
-      tileset-sliced_95: 830307753
-      descending_tileTL: 21300026
-      tileset-sliced_113: -1809934759
-      tileset-sliced_100: 1810914869
-      tileset-sliced_82: 21300100
+      dungeon_shelf5: -974055963
+      airPlatform_center2: 1378904278
+      underground_tile2: -472009167
+      caveEdge_right7: 836369481
+      tileset-sliced_62: 21300046
+      BasePlatform_ML: 21300052
+      tileset-sliced_26: 21300092
+      tileset-sliced_46: 21300084
+      tileset-sliced_42: -2091558954
+      tileset-sliced_110: 21300012
+      log_right3: -1039533412
+      tileset-sliced_112: 21300030
+      tileset-sliced_15: -516509527
+      tileset-sliced_111: -1809249948
+      grassyBlock_left_bottom2: -1146504122
+      sand_block_BC: 641849841
+      grassyBlock_left_bottom3: -591741057
+      tileset-sliced_90: 21300050
+      BasePlatform_MR: -958166428
+      airFlat_Center: 21300090
+      tileset-sliced_45: 21300056
+      tileset-sliced_28: 21300106
+      sand_block_TR: 21300032
+      tileset-sliced_16: 393435982
+      underground_tile1: 204943734
+      caveEdge_right1: 21300024
+      tileset-sliced_69: 21300010
+      BasePlatform_MC: -2048167372
+      tileset-sliced_47: 21300048
+      BasePlatform_BC: -1938035467
+      tileset-sliced_31: 356564980
+      caveEdge_left7: 21300060
+      airPlatform_1_LB: 356564980
+      tileset-sliced_30: 1372182541
+      tileset-sliced_27: 466450803
+      underground_tile4: 21300044
+      descending_tileBR: -1038546666
+      caveEdge_left1: 21300008
+      dungeon_shelf2: 458691838
+      tileset-sliced_48: 457718883
+      dungeon_shelf3: 1056375511
+      tileset-sliced_72: 21300114
+      tileset-sliced_109: 21300110
+      sand_block_2C: -454035284
+      tileset-sliced_32: 21300022
+      ascending_tileTL: 1528918380
+      caveEdge_right3: 21300008
+      log_right1: -2048167372
+      grassyBlock_right_top3: 758458439
+      sand_block_2R: 21300072
+      BasePlatform_TL: 21300010
+      log_right2: -2019880191
+      caveEdge_left3: 1570856095
+      sand_block_BL: 21300068
+      BasePlatform_BR: 1466001968
+      BasePlatform_BL: 641849841
+      tileset-sliced_88: 2086579686
+      caveEdge_right2: 2086579686
+      tileset-sliced_119: 758458439
+      caveEdge_right4: 854183433
+      grassyBlock_right_bottom3: 21300020
+      airFlat_Left: -25084968
+      sand_block_BR: 21300004
+      tileset-sliced_10: 1056375511
+      BasePlatform_TR: 21300082
+      sand_block_TC: -1218152210
+      caveEdge_left4: -2036947281
+      tileset-sliced_41: 21300038
+      ascending_tileBL: 21300042
+      descending_tileBL: 21300114
+      airPlatform_center: 281654738
+      BasePlatform_TC: 457718883
+      caveEdge_left6: 21300028
+      descending_tileTR: 21300078
+      log_left1: 21300088
+      tileset-sliced_121: 21300080
+      tileset-sliced_44: 21300044
+      tileset-sliced_40: 21300074
+      tileset-sliced_60: 21300040
+      ascending_tileBR: -1809249948
+      tileset-sliced_49: -657056394
+      airPlatform_1_R2: 21300118
+      airPlatform_1_TLRB: -1854451269
+      tileset-sliced_9: -1042185689
+      tileset-sliced_74: -974055963
+      tileset-sliced_71: 1372182541
+      underground_tile_extra: 16140253
+      dungeon_shelf4: -1655255299
+      grassyBlock_left_top1: -1938035467
+      grassyBlock_right_top2: 1356805907
+      caveEdge_right5: 1836839275
+      tileset-sliced_70: 854183433
+      tileset-sliced_73: 1443298058
+      grassyBlock_left_bottom1: -1619586058
+      tileset-sliced_68: 21300086
+      tileset-sliced_120: 21300108
+      sand_block_2L: 21300034
+      tileset-sliced_43: 21300074
+      log_left3: 21300112
+      tileset-sliced_17: 1443298058
+      airPlatform_1_L1: -880423511
+      grassyBlock_left_top2: 21300102
+      sand_block_TL: 21300026
+      descending_tileTL: 281654738
+      grassyBlock_right_top1: 21300076
+      log_left2: -1809934759
+      caveEdge_right6: 21300100
+      tileset-sliced_82: -2036947281
+      grassyBlock_right_bottom1: 176056006
+      dungeon_shelf6: -987682413
+      grassyBlock_left_top3: -77968962
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

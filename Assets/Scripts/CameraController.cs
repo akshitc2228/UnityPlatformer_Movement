@@ -12,15 +12,20 @@ public class CameraController : MonoBehaviour
     private Rigidbody2D _playerRb;
     [SerializeField] 
     private BoxCollider2D sceneBoundObj;
+    [SerializeField]
+    private CameraZones _zones;
 
     //offsets:
     [Header("Offsets for camera")]
     [SerializeField]
     private float _lateralOffset;
+    [SerializeField] private float neutralVerticalOffset;
     [SerializeField]
     private float _verticalOffset;
     [SerializeField]
     float _neutralLateralOffset = 0.5f;
+    [SerializeField] private float peekUpDistance = 2.5f;
+    [SerializeField] private float peekDownDistance = 3.5f;
 
     //transition variables:
     [Header("Camera transition speeds")]
@@ -33,12 +38,15 @@ public class CameraController : MonoBehaviour
     float _directionalSmoothTime;
     //vertical movement speed variables:
     [SerializeField]
-    float _verticalTransitionSpeed = 0.7f;
+    float _verticalTransitionSpeed;
+    [SerializeField] private float _camVerticalVelocity;
     [SerializeField]
     private float _verticalSmoothTime;
 
-    //TODO: in a full level bounds would need to be introduced to clamp camera position at start and end of level
-    //internal camera variables:
+    //local velocity refs
+    private float orthographicTransitionRef = 1f;
+    private float cameraMovementVelocity = 0.5f;
+
     float _desiredX;
     float _desiredY;
     //Idk it'd probably be best to understand clipping panes for this
@@ -59,15 +67,25 @@ public class CameraController : MonoBehaviour
     float _upperThreshold;
     float _lowerThreshold;
 
+    //TODO: remove this and use the sceneBoundsSO instead
     private Bounds sceneBounds;
+    private float initOrthographicSize;
+    private float inputY;
+    private float lockedOffsetX;
+    private float lockedOffsetY;
+    private bool offsetLocked = false;
+    private bool isReturningFromPeek;
+    private float returnTargetY;
 
-    //whether we need a setter yet is debatable
-    public Bounds GetSceneBounds() => sceneBounds;
+    public float CameraClampedX { get; private set; }
+    public float CameraClampedY { get; private set; }
 
     // Start is called before the first frame update
     void Start()
     {
         _lateralOffset = _neutralLateralOffset;
+        _verticalOffset = neutralVerticalOffset;
+
         _forwardFacingOffset = Mathf.Abs(_lateralOffset);
         _backwardFacingOffset = -_forwardFacingOffset;
 
@@ -80,6 +98,7 @@ public class CameraController : MonoBehaviour
         //init the camera and its initial bounds:
         _mainCamera = GetComponent<Camera>();
         _verticalExtent = _mainCamera.orthographicSize;
+        initOrthographicSize = _verticalExtent;
         GetVerticalCameraBounds();
         cameraHalfWidth = _verticalExtent * Camera.main.aspect;
 
@@ -90,11 +109,46 @@ public class CameraController : MonoBehaviour
         sceneBounds = sceneBoundObj.bounds;
     }
 
+    private void Update()
+    {
+        inputY = Input.GetAxisRaw( "Vertical" );
+        if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.S))
+        {
+            returnTargetY = _playerTransform.position.y + neutralVerticalOffset;
+            isReturningFromPeek = true;
+        }
+        else if (Mathf.Abs(inputY) > 0.01f)
+        {
+            isReturningFromPeek = false;
+        }
+    }
+
     private void LateUpdate()
     {
+        //manage orthographic size
+        if (_zones && _zones.ZoneActive && _zones.CustomOrthographicSize > 0)
+        {
+            _mainCamera.orthographicSize = Mathf.SmoothDamp(
+                _mainCamera.orthographicSize,
+                _zones.CustomOrthographicSize,
+                ref orthographicTransitionRef,
+                _directionalSmoothTime
+            );
+        }
+        else
+        {
+            _mainCamera.orthographicSize = Mathf.SmoothDamp(
+                _mainCamera.orthographicSize,
+                initOrthographicSize,
+                ref orthographicTransitionRef,
+                _directionalSmoothTime
+            );
+        }
+
+
         //move lateral camera:
         MoveDirectionCamera();
-        _desiredX = _playerTransform.position.x + _lateralOffset;
+        _desiredX = _zones.ZoneActive ? Mathf.SmoothDamp(_desiredX, lockedOffsetX, ref _directionalTransitionSpeed, _directionalSmoothTime) : _playerTransform.position.x + _lateralOffset;
 
         //vertical camera movement:
         GetVerticalCameraBounds();
@@ -104,9 +158,9 @@ public class CameraController : MonoBehaviour
         Vector3 desiredPosition = new Vector3(_desiredX, _desiredY, _desiredZ);
 
         //Clamp desired position BEFORE applying smoothing
-        float clampedX = Mathf.Clamp(desiredPosition.x, sceneBounds.min.x + cameraHalfWidth, sceneBounds.max.x - cameraHalfWidth);
-        float clampedY = Mathf.Clamp(desiredPosition.y, sceneBounds.min.y + _verticalExtent, sceneBounds.max.y - _verticalExtent);
-        desiredPosition = new Vector3(clampedX, clampedY, _desiredZ);
+        CameraClampedX = Mathf.Clamp(desiredPosition.x, sceneBounds.min.x + cameraHalfWidth, sceneBounds.max.x - cameraHalfWidth);
+        CameraClampedY = Mathf.Clamp(desiredPosition.y, sceneBounds.min.y + _verticalExtent, sceneBounds.max.y - _verticalExtent);
+        desiredPosition = new Vector3(CameraClampedX, CameraClampedY, _desiredZ);
 
         // Smooth follow
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, _movementTransitionSpeed);
@@ -123,9 +177,26 @@ public class CameraController : MonoBehaviour
         //although, we might be hit and rebounded backwards unintentionally so keep this?
         bool isMoving = Mathf.Abs(_playerRb.velocity.x) > 0.1f;
 
-        float targetOffset = isMoving
-            ? (isFacingLeft ? _backwardFacingOffset : _forwardFacingOffset)
-            : _neutralLateralOffset;
+        float targetOffset = 0f;
+        if (_zones && _zones.ZoneActive && _zones.XOffset != 0f)
+        {
+            if (!offsetLocked)
+            {
+                lockedOffsetX = _playerTransform.position.x + _zones.XOffset;
+                offsetLocked = true;
+            }
+
+            targetOffset = _zones.XOffset;
+        }
+        else
+        {
+            offsetLocked = false;
+
+            targetOffset = isMoving
+                ? (isFacingLeft ? _backwardFacingOffset : _forwardFacingOffset)
+                : _neutralLateralOffset;
+        }
+
 
         _lateralOffset = Mathf.SmoothDamp(_lateralOffset, targetOffset, ref _directionalTransitionSpeed, _directionalSmoothTime);
 
@@ -140,12 +211,35 @@ public class CameraController : MonoBehaviour
     //this should return the desiredY position for the camera now or is that a misguided approach?:
     float GetCameraDesiredY()
     {
-        float playerY = _playerTransform.position.y + _verticalOffset;
+        float currentCamY = transform.position.y;
+        float playerYOnly = _playerTransform.position.y;
+        float playerY = playerYOnly + _verticalOffset;
+        if (Mathf.Abs(inputY) > 0.01f)
+        {
+            if (inputY > 0)
+            {
+                return Mathf.SmoothDamp(currentCamY, playerY + peekUpDistance, ref _verticalTransitionSpeed, _verticalSmoothTime);
+            }
+            else if (inputY < 0)
+            {
+                return Mathf.SmoothDamp(currentCamY, playerY - peekDownDistance, ref _verticalTransitionSpeed, _verticalSmoothTime);
+            }
+        }
+
+        // 2. If returning from peek (after key release), go back to neutral
+        if (isReturningFromPeek)
+        {
+            if (Mathf.Abs(currentCamY - returnTargetY) < 0.05f)
+            {
+                isReturningFromPeek = false;
+                return currentCamY;
+            }
+
+            return Mathf.SmoothDamp(currentCamY, returnTargetY, ref _camVerticalVelocity, _verticalSmoothTime);
+        }
 
         float currentTopDistance = _upperCameraBound - playerY;
         float currentBottomDistance = playerY - _lowerCameraBound;
-
-        float currentCamY = transform.position.y;
 
         if (currentTopDistance < _upperThreshold)
         {
@@ -160,5 +254,4 @@ public class CameraController : MonoBehaviour
 
         return currentCamY;
     }
-
 }

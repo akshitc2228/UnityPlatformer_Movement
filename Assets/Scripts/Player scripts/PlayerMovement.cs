@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Windows;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashSpeed = 22f;
     [SerializeField] private float dashDuration = 0.2f;
     [SerializeField] private float dashCooldown = 0.2f;
+    [SerializeField] private float groundedStopDamp = 15f;
 
     [Header("Sliding params")]
     [SerializeField] private float maxSlideSpeed = 30f;
@@ -51,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
         else if (_directionFacing > 0)
             transform.rotation = Quaternion.Euler(0, 0, 0);
     }
-    public void Move(Rigidbody2D rb, Vector2 groundNormal, bool isGrounded)
+    public void Move(Rigidbody2D rb, Vector2 groundNormal, bool isGrounded, float inputX)
     {
         if (!isGrounded) return; // leave airborne motion to JumpPhysics
 
@@ -63,6 +65,15 @@ public class PlayerMovement : MonoBehaviour
         float tangentSpeed = velocityTangent;
 
         float slopeAngle = Vector2.Angle(groundNormal, Vector2.up);
+
+        ////for when we wanna snap stop
+        //if (isGrounded && Mathf.Abs(inputX) < 0.01f)
+        //{
+        //    // simulate static friction by damping horizontal velocity
+        //    rb.velocity = new Vector2(
+        //        Mathf.Lerp(rb.velocity.x, 0, Time.fixedDeltaTime * groundedStopDamp),
+        //        rb.velocity.y);
+        //}
 
         if (slopeAngle <= 0.1f)
         {
