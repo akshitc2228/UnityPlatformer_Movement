@@ -7,7 +7,7 @@ TagManager:
   - FlippingRange_1
   - SlopeAndKhai
   - SceneBounds
-  - dunegon_1_pushableBox1
+  - dungeon2_pushableCrate
   layers:
   - Default
   - TransparentFX
