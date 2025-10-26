@@ -6,10 +6,7 @@ public class CameraController : MonoBehaviour
 {
     //external fields:
     [Header("External fields")]
-    [SerializeField]
-    private Transform _playerTransform;
-    [SerializeField]
-    private Rigidbody2D _playerRb;
+    [SerializeField] private GameObject player;
     [SerializeField] 
     private BoxCollider2D sceneBoundObj;
     [SerializeField]
@@ -80,9 +77,39 @@ public class CameraController : MonoBehaviour
     public float CameraClampedX { get; private set; }
     public float CameraClampedY { get; private set; }
 
+    private GameObject playerObject;
+    private Transform _playerTransform;
+    private Rigidbody2D _playerRb;
+
+    private void OnEnable()
+    {
+        GameManager.Instance.OnPlayerRespawned += OnPlayerRespawned;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnPlayerRespawned -= OnPlayerRespawned;
+    }
+
+    void OnPlayerRespawned(GameObject newPlayer)
+    {
+        playerObject = newPlayer;
+        _playerTransform = playerObject.transform;
+        _playerRb = playerObject.GetComponent<Rigidbody2D>();
+    }
+
+
+    private void Awake()
+    {
+        playerObject = player;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        _playerTransform = playerObject.transform;
+        _playerRb = playerObject.GetComponent<Rigidbody2D>();
+
         _lateralOffset = _neutralLateralOffset;
         _verticalOffset = neutralVerticalOffset;
 

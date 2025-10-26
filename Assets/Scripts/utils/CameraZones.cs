@@ -12,33 +12,46 @@ public class CameraZones : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if(collider != null && collider.CompareTag("FlippingRange_1"))
+        if(collider != null)
         {
-            //first check the player zone:
-            Transform playerTransform = this.transform;
-            float facingAngleY = playerTransform.eulerAngles.y;
-            bool isFacingLeft = Mathf.Approximately(facingAngleY, 180f);
+            if(collider.CompareTag("FlippingRange_1"))
+            {
+                Transform playerTransform = this.transform;
+                float facingAngleY = playerTransform.eulerAngles.y;
+                bool isFacingLeft = Mathf.Approximately(facingAngleY, 180f);
 
-            ZoneActive = true;
-            XOffset = !isFacingLeft ? 17 : -17;
-            CustomOrthographicSize = 13;
-        }
+                ZoneActive = true;
+                XOffset = !isFacingLeft ? 17 : -17;
+                CustomOrthographicSize = 13;
+            }
 
-        if (collider != null && collider.CompareTag("SlopeAndKhai"))
-        {
-            //first check the player zone:
-            Transform playerTransform = this.transform;
-            float facingAngleY = playerTransform.eulerAngles.y;
-            bool isFacingLeft = Mathf.Approximately(facingAngleY, 180f);
+            if (collider.CompareTag("SlopeAndKhai"))
+            {
+                Transform playerTransform = this.transform;
+                float facingAngleY = playerTransform.eulerAngles.y;
+                bool isFacingLeft = Mathf.Approximately(facingAngleY, 180f);
 
-            ZoneActive = true;
-            XOffset = !isFacingLeft ? 20 : -20;
-            CustomOrthographicSize = 20;
+                ZoneActive = true;
+                XOffset = !isFacingLeft ? 20 : -20;
+                CustomOrthographicSize = 20;
+            }
+
+            if (collider.CompareTag("HiddenDungeon"))
+            {
+                Transform playerTransform = this.transform;
+                float facingAngleY = playerTransform.eulerAngles.y;
+                bool isFacingLeft = Mathf.Approximately(facingAngleY, 180f);
+
+                ZoneActive = true;
+                YOffset = -2;
+                XOffset = !isFacingLeft ? 15 : -15;
+            }
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        //condense to collision exit with anything
         if(collision != null && collision.CompareTag("FlippingRange_1"))
         {
             ZoneActive = false;

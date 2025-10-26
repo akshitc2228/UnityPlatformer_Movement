@@ -84,9 +84,11 @@ public class PlayerAnimator : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(postDeathPause);
         playerAnimator.ResetTrigger(DeathTrigger);
+
         deathPauseCoroutine = null;
 
         ShowGameOverMenu?.Invoke();
+        Destroy(gameObject);
     }
 
     private void PlayHurtAnimation()

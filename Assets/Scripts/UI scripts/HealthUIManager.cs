@@ -6,14 +6,24 @@ using UnityEngine.UI;
 public class HealthUIManager : MonoBehaviour
 {
     [SerializeField] private List<Image> heartImages;
-    [SerializeField] private PlayerHealth playerHealth;
+    //post respawn issue:
+    [SerializeField] private PlayerHealth PlayerHealth;
     [SerializeField] private Sprite fullHeart;
     [SerializeField] private Sprite halfHeart;
     [SerializeField] private Sprite emptyHeart;
 
+    //local field
+    private PlayerHealth playerHealth;
+
+    private void Awake()
+    {
+        playerHealth = PlayerHealth;
+    }
+
     private void OnEnable()
     {
         playerHealth.OnHealthChanged += UpdateHearts;
+        GameManager.Instance.OnPlayerRespawned += ReloadNewHealthClass;
     }
 
     private void Start()
@@ -25,6 +35,12 @@ public class HealthUIManager : MonoBehaviour
     {
         if(playerHealth != null)
             playerHealth.OnHealthChanged -= UpdateHearts;
+    }
+
+    private void ReloadNewHealthClass(GameObject newPlayer)
+    {
+        playerHealth = newPlayer.GetComponent<PlayerHealth>();
+        playerHealth.OnHealthChanged += UpdateHearts;
     }
 
     private void UpdateHearts()

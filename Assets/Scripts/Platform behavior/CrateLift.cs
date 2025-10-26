@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class CrateLift : MonoBehaviour
 {
     [Header("Waypoints")]
     [SerializeField] private List<Transform> targetPoints;
     [SerializeField] private float liftMoveTime = 0.9f;
+
+    [SerializeField] private List<MonoBehaviour> affected = new List<MonoBehaviour>();
 
     private Vector3 velocity = Vector3.zero;
 
@@ -44,6 +47,15 @@ public class CrateLift : MonoBehaviour
             ref velocity,
             liftMoveTime
         );
+
+        if(localUpdatedIndex == orderedThresholds.Count - 1)
+        {
+            foreach (var target in affected)
+            {
+                if (target is IActivatable activatable)
+                    activatable.Activate();
+            }
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

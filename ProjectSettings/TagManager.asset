@@ -8,6 +8,7 @@ TagManager:
   - SlopeAndKhai
   - SceneBounds
   - dungeon2_pushableCrate
+  - HiddenDungeon
   layers:
   - Default
   - TransparentFX
