@@ -43,7 +43,7 @@ public class CameraZones : MonoBehaviour
                 bool isFacingLeft = Mathf.Approximately(facingAngleY, 180f);
 
                 ZoneActive = true;
-                YOffset = -2;
+                YOffset = 5;
                 XOffset = !isFacingLeft ? 15 : -15;
             }
         }
@@ -58,6 +58,11 @@ public class CameraZones : MonoBehaviour
         }
 
         if (collision != null && collision.CompareTag("SlopeAndKhai"))
+        {
+            ZoneActive = false;
+        }
+
+        if (collision != null && collision.CompareTag("HiddenDungeon"))
         {
             ZoneActive = false;
         }
