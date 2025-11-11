@@ -15,13 +15,17 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float neutralVerticalOffset;
     [SerializeField] private float _neutralLateralOffset = 4f;
     [SerializeField] private float peekUpDistance = 2.5f;
-    [SerializeField] private float peekDownDistance = 3.5f;
+    [SerializeField] private float peekDownDistance = -3.5f;
 
     [Header("Camera transition speeds")]
     [SerializeField] private float _movementTransitionSpeed = 0.125f;
     [SerializeField] private float _directionalSmoothTime = 0.15f;
     [SerializeField] private float _verticalSmoothTime = 0.12f;
     [SerializeField] private float _cinematicSmoothTimeX = 0.45f; // new parameter
+
+    [Header("Thresholds")]
+    [SerializeField] private float _upperThreshold = 1.5f;
+    [SerializeField] private float _lowerThreshold = 1.5f;
 
     // velocity holders for SmoothDamp (must be unique per SmoothDamp call)
     private float _lateralOffsetVelocity;
@@ -42,8 +46,6 @@ public class CameraController : MonoBehaviour
     private float _upperCameraBound;
     private float _lowerCameraBound;
 
-    [SerializeField] private float _upperThreshold = 1.5f;
-    private float _lowerThreshold;
 
     private Bounds sceneBounds;
     private float initOrthographicSize;
@@ -134,8 +136,9 @@ public class CameraController : MonoBehaviour
         GetVerticalCameraBounds();
 
         // compute lower threshold based on current values
-        if (_playerTransform != null)
-            _lowerThreshold = (_playerTransform.position.y + _verticalOffset) - _lowerCameraBound;
+        //commented this out for now cause I wanted to test bugs with hardcoded value
+        //if (_playerTransform != null)
+        //    _lowerThreshold = (_playerTransform.position.y + _verticalOffset) - _lowerCameraBound;
 
         if (sceneBoundObj != null)
             sceneBounds = sceneBoundObj.bounds;
@@ -178,6 +181,7 @@ public class CameraController : MonoBehaviour
         // manage orthographic size (safe SmoothDamp using dedicated ref)
         if (_zones != null && _zones.ZoneActive && _zones.CustomOrthographicSize > 0)
         {
+            //Debug.Log($"orthographic coming from zone as: {_zones.CustomOrthographicSize}");
             _mainCamera.orthographicSize = Mathf.SmoothDamp(
                 _mainCamera.orthographicSize,
                 _zones.CustomOrthographicSize,
@@ -209,8 +213,6 @@ public class CameraController : MonoBehaviour
         // vertical
         GetVerticalCameraBounds();
         _desiredY = GetCameraDesiredY();
-
-        //Debug.Log($"RETURNED DESIREDy FROM THE METHOD: {_desiredY}");
 
         // Combine and clamp BEFORE applying smoothing to avoid NaN
         Vector3 desiredPosition = new Vector3(_desiredX, _desiredY, _desiredZ);
@@ -276,7 +278,6 @@ public class CameraController : MonoBehaviour
         );
     }
 
-
     void GetVerticalCameraBounds()
     {
         _upperCameraBound = transform.position.y + _verticalExtent;
@@ -288,39 +289,52 @@ public class CameraController : MonoBehaviour
         float currentCamY = transform.position.y;
         float playerY = _playerTransform.position.y;
 
-        float playerSign = playerY < 0 ? -1 : 1;
-
-        // TODO: remove; it is needless; too many variables for the same thing
-        float baseOffset = neutralVerticalOffset * playerSign;
-
-        // Cinematic override (disable peeking in zones)
-        bool allowPeek = true;
-        if (_zones != null && _zones.ZoneActive)
+        float baseOffset = neutralVerticalOffset;
+        if (_zones != null && _zones.ZoneActive && _zones.YOffset != 0)
         {
-            baseOffset = _zones.YOffset * playerSign;
-            allowPeek = false;
+            baseOffset = _zones.YOffset;
         }
-        // Apply the offset to the player's Y
+
         float targetY = playerY + baseOffset;
 
-        // Handle peek input (only if allowed)
-        if (allowPeek)
+        if (Mathf.Abs(inputY) > 0.01f)
         {
-            if (Mathf.Abs(inputY) > 0.01f)
             if (inputY > 0.01f)
-            {
-                targetY = playerY + baseOffset + peekUpDistance * playerSign;
-            }
+                targetY += peekUpDistance;
             else if (inputY < -0.01f)
-            {
-                targetY = playerY + baseOffset - peekDownDistance * playerSign;
-            }
+                targetY += peekDownDistance;
         }
 
-        // Smoothly move the camera toward target Y
+        // Calculate how close the player is to camera edges
+        float currentDisFromTop = _upperCameraBound - playerY;
+        float currentDistFromBottom = targetY - _lowerCameraBound;
+
+        float finalTargetY = targetY; // default: don't move
+
+        // Move camera upward when player nears top
+        if (currentDisFromTop < _upperThreshold)
+        {
+            float moveBy = _upperThreshold - currentDisFromTop;
+            finalTargetY = currentCamY + moveBy;
+        }
+        // Move camera downward when player nears bottom
+        else if (currentDistFromBottom < _lowerThreshold)
+        {
+            float moveBy = _lowerThreshold - currentDistFromBottom;
+            finalTargetY = currentCamY - moveBy;
+        }
+        else
+        {
+            if (Mathf.Abs(currentCamY - targetY) > 0.05f)
+                finalTargetY = targetY;
+            else
+                return currentCamY; // fully static if already aligned
+        }
+
+        // Smoothly approach chosen target
         float smoothedY = Mathf.SmoothDamp(
             currentCamY,
-            targetY,
+            finalTargetY,
             ref _cameraVerticalVelocity,
             _verticalSmoothTime
         );

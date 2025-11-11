@@ -22,6 +22,13 @@ public class Lift : PlatformMover, IActivatable
         startPos = transform.position;
     }
 
+    protected override void Start()
+    {
+        base.Start();
+        Debug.Log($"just wanna know what target we came up with: {targetPos}");
+        Debug.Log($"and my position at the start?: {transform.position}");
+    }
+
     protected override float DefineSpeed()
     {
         if (!isMoving || reachedStop) return 0f;
@@ -46,6 +53,7 @@ public class Lift : PlatformMover, IActivatable
         {
             yield return null;
         }
+        Debug.Log("exiting prematurely?");
 
         // stop moving completely
         isMoving = false;
@@ -58,7 +66,7 @@ public class Lift : PlatformMover, IActivatable
     protected override void OnReachedTarget()
     {
         // The lift has reached its destination; stop here
-        Debug.Log("Lift reached target point");
+        Debug.Log($"Lift reached target point with current positon: {transform.position}");
         isMoving = false;
         reachedStop = true;
 
